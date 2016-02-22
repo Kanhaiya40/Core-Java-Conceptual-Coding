@@ -1,0 +1,14 @@
+/build
+**/build
+**/target
+.classpath
+*.idea
+**/.idea
+*.iml
+**/*.iml
+**/out
+**/.DS_store
+**/*.iml
+**/.idea
+**/.project
+**/.settings  

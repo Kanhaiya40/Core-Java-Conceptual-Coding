@@ -1,0 +1,22 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <servlet>
+    <servlet-name>com.cognitree.samples.resourcedelegator.core.ResourceDelegator</servlet-name>
+    <servlet-class>com.cognitree.samples.resourcedelegator.core.ResourceDelegator</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>com.cognitree.samples.resourcedelegator.core.ResourceDelegator</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  <context-param>
+    <param-name>resource.package.name</param-name>
+    <param-value>com.cognitree.samples.resourcedelegator.resources</param-value>
+  </context-param>
+</web-app>
