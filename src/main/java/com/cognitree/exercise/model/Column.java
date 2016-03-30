@@ -17,7 +17,7 @@ public class Column {
         this.key = key;
     }
 
-    public String getValue() {
+    public String getStringValue() {
         return value;
     }
 

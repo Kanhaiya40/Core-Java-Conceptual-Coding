@@ -66,6 +66,18 @@ public class SparseMatrix {
                             for (Function function : functions) {
                                 function.compute(column.getDoubleValue());
                             }
+                        }else if (type.getTypeName().equals("java.lang.String")) {
+                            for (Function function : functions) {
+                                function.compute(column.getStringValue());
+                            }
+                        }else if (type.getTypeName().equals("java.lang.Float")) {
+                            for (Function function : functions) {
+                                function.compute(column.getFloatValue());
+                            }
+                        }else if (type.getTypeName().equals("java.lang.Integer")) {
+                            for (Function function : functions) {
+                                function.compute(column.getIntValue());
+                            }
                         }
                         break;
                     } catch (NumberFormatException e) {

@@ -52,10 +52,10 @@ public class TestSparseMatrix {
         final ColumnIterator columnIterator = row.iterator();
         Column column = columnIterator.next();
         Assert.assertEquals(column.getKey(), "c2");
-        Assert.assertEquals(column.getValue(), "1");
+        Assert.assertEquals(column.getStringValue(), "1");
         column = columnIterator.next();
         Assert.assertEquals(column.getKey(), "c3");
-        Assert.assertEquals(column.getValue(), "2");
+        Assert.assertEquals(column.getStringValue(), "2");
     }
 
     @Test(expectedExceptions = ParseException.class)
