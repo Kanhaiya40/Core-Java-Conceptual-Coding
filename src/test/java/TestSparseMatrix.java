@@ -4,25 +4,21 @@ import com.cognitree.exercise.core.exceptions.ParseException;
 import com.cognitree.exercise.model.*;
 import com.cognitree.exercise.samples.*;
 import org.junit.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
 public class TestSparseMatrix {
+    private SparseMatrix matrix;
 
-    @DataProvider(name = "files")
-    public Object[][] files() {
-        Object[][] files = new Object[3][1];
-        files[0][0] = "/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt";
-        files[1][0] = "/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix1.txt";
-        files[2][0] = "/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt";
-        return files;
+    @Before
+    public void init() throws IOException {
+        matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources/matrix.txt");
     }
 
-    @Test(dataProvider = "files")
-    public void testIterator(String file) throws IOException {
-        SparseMatrix matrix = new SparseMatrix(file);
+    @Test
+    public void testIterator() throws IOException {
         final RowIterator rowIterator = matrix.rowIterator();
         while (rowIterator.hasNext()) {
             final Row row = rowIterator.next();
@@ -33,9 +29,8 @@ public class TestSparseMatrix {
         }
     }
 
-    @Test(dataProvider = "files")
-    public void testRowIterator(String files) throws IOException {
-        SparseMatrix matrix = new SparseMatrix(files);
+    @Test
+    public void testRowIterator() throws IOException {
         final RowIterator rowIterator = matrix.rowIterator();
         Assert.assertEquals(rowIterator.next().getName(), "r1");
         Assert.assertEquals(rowIterator.next().getName(), "v3");
@@ -46,7 +41,6 @@ public class TestSparseMatrix {
 
     @Test
     public void testColumnIterator() throws IOException {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         final RowIterator rowIterator = matrix.rowIterator();
         final Row row = rowIterator.next();
         final ColumnIterator columnIterator = row.iterator();
@@ -58,9 +52,9 @@ public class TestSparseMatrix {
         Assert.assertEquals(column.getStringValue(), "2");
     }
 
-    @Test(expectedExceptions = ParseException.class)
+    @Test(expected = ParseException.class)
     public void validateParseExceptions() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix-error.txt");
+        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/sandbox/src/test/resources/matrix-error.txt");
         final RowIterator rowIterator = matrix.rowIterator();
         final Row row = rowIterator.next();
         final ColumnIterator columnIterator = row.iterator();
@@ -69,48 +63,28 @@ public class TestSparseMatrix {
         }
     }
 
-    @Test(expectedExceptions = InvalidOperationException.class)
+    @Test(expected = InvalidOperationException.class)
     public void validateInvalidOperationException() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         Sum sum = new Sum();
         matrix.evaluate("c3", false, sum);
     }
 
     @Test
     public void testSum() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         Sum sum = new Sum();
         matrix.evaluate("c2", true, sum);
         Assert.assertEquals(sum.getResult(), 655d, 2);
     }
 
     @Test
-    public void testSumIterator() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
-        SumIteratorImpl sum = new SumIteratorImpl();
-        final FieldIterator fieldIterator = matrix.fieldIterator("c2");
-        Assert.assertEquals(sum.compute(fieldIterator), 655d, 2);
-    }
-
-    @Test
     public void testAvg() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         Average avg = new Average();
         matrix.evaluate("c2", true, avg);
         Assert.assertEquals(avg.getResult(), 163.75d, 2);
     }
 
     @Test
-    public void testAvgIterator() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
-        AverageIteratorImpl avg = new AverageIteratorImpl();
-        final FieldIterator fieldIterator = matrix.fieldIterator("c2");
-        Assert.assertEquals(avg.compute(fieldIterator), 163.75d, 2);
-    }
-
-    @Test
     public void multiFunctionTest() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         Average avg = new Average();
         Sum sum = new Sum();
         matrix.evaluate("c2", true, sum, avg);
@@ -121,7 +95,6 @@ public class TestSparseMatrix {
 
     @Test
     public void testStdDev() throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/samples/ProgrammingExercise/src/test/resources/matrix.txt");
         StdDeviation stdDeviation = new StdDeviation();
         matrix.evaluate("c2", true, stdDeviation);
         Assert.assertEquals(stdDeviation.getResult(), 217.03d, 2);

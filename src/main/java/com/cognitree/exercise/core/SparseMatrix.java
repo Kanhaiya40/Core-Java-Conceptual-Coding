@@ -1,26 +1,81 @@
 package com.cognitree.exercise.core;
 
 import com.cognitree.exercise.core.exceptions.InvalidOperationException;
+import com.cognitree.exercise.core.exceptions.ParseException;
 import com.cognitree.exercise.model.*;
+import com.cognitree.exercise.samples.Sum;
+import com.cognitree.exercise.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
  * SparseMatrix class provides an iterator to iterate row by row over a file.
  */
 public class SparseMatrix {
-    public static final Logger logger = LoggerFactory.getLogger(SparseMatrix.class);
-    public final String fileName;
+    private static final Logger logger = LoggerFactory.getLogger(SparseMatrix.class);
+    private final String fileName;
+    private static final String FIELD_SEPARATOR = ",";
+    public static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
+    private final HashMap<String, BufferedWriter> columnWriterMap = new HashMap<>();
+    private String path;
 
-    public SparseMatrix(String fileName) {
+    public SparseMatrix(String fileName) throws IOException {
         logger.info("Initializing file {}. ", fileName);
         this.fileName = fileName;
+    }
+
+    public SparseMatrix(String fileName, String path) throws IOException {
+        logger.info("Initializing file {}. ", fileName);
+        this.fileName = fileName;
+        this.path = path;
+        init();
+    }
+
+    //for unit test case
+    public void initPath(String path){
+        this.path = path;
+    }
+
+
+    private void init() throws IOException {
+        int traceRow = 0, traceColumn = 0;
+        Scanner scanner = new Scanner(new File(fileName));
+        while (scanner.hasNext()) {
+            traceRow++;
+            final String line = scanner.nextLine();
+            final String[] parts = line.split(FIELD_SEPARATOR);
+            for (int i = 1; i < parts.length; i++) {
+                traceColumn++;
+                final String[] columnKeyValuePair = parts[i].split(COLUMN_KEY_VALUE_SEPARATOR);
+                if (columnKeyValuePair.length != 2) {
+                    throw new ParseException(traceRow, traceColumn);
+                }
+                final String key = columnKeyValuePair[0];
+                if (columnWriterMap.containsKey(key)) {
+                    BufferedWriter writer = columnWriterMap.get(key);
+                    FileUtil.writeToFile(writer, parts[i]);
+                } else {
+                    File file = new File(getFileName(key));
+                    file.createNewFile();
+                    final BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                    columnWriterMap.put(key, writer);
+                    FileUtil.writeToFile(writer, parts[i]);
+                }
+            }
+        }
+    }
+
+    private String getFileName(String key) {
+        return path+"/"+key.trim();
     }
 
     /**
@@ -40,8 +95,8 @@ public class SparseMatrix {
      * @return FieldIterator
      * @throws IOException
      */
-    public FieldIterator fieldIterator(String fieldName) throws IOException {
-        return new FieldIterator(new Scanner(new File(fileName)), fieldName);
+    public FieldIterator valueIterator(String fieldName) throws IOException {
+        return new FieldIterator(fieldName, path);
     }
 
     /**
@@ -90,6 +145,47 @@ public class SparseMatrix {
         }
     }
 
+    /**
+     * Accepts a function and evaluate it over specified columnName.
+     *
+     * @param columnName       over which you want to evaluate the function
+     * @param ignoreParseError true if you want to ignore error value in specified column
+     * @param functions        which you want to evaluate given columnName
+     * @throws Exception
+     */
+    public void evaluateValue(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
+        int traceRow=0;
+        final Type type = getType(functions[0]);
+        final FieldIterator fieldIterator = this.valueIterator(columnName.trim());
+        while (fieldIterator.hasNext()) {
+            traceRow++;
+            final String value = fieldIterator.next();
+            try {
+                if (type.getTypeName().equals("java.lang.Double")) {
+                    for (Function function : functions) {
+                        function.compute(Double.parseDouble(value));
+                    }
+                } else if (type.getTypeName().equals("java.lang.String")) {
+                    for (Function function : functions) {
+                        function.compute(value);
+                    }
+                } else if (type.getTypeName().equals("java.lang.Float")) {
+                    for (Function function : functions) {
+                        function.compute(Float.parseFloat(value));
+                    }
+                } else if (type.getTypeName().equals("java.lang.Integer")) {
+                    for (Function function : functions) {
+                        function.compute(Integer.parseInt(value));
+                    }
+                }
+            } catch (NumberFormatException e) {
+                if (!ignoreParseError) {
+                    throw new InvalidOperationException(traceRow, columnName);
+                }
+            }
+        }
+    }
+
     private Type getType(Function function) {
         final Type[] genericInterfaces = function.getClass().getGenericInterfaces();
         for (Type genericInterface : genericInterfaces) {
@@ -97,6 +193,13 @@ public class SparseMatrix {
                 return ((ParameterizedType) genericInterface).getActualTypeArguments()[0];
         }
         return null;
+    }
+
+    public static void main(String[] args) throws Exception {
+        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources/matrix.txt", "/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources");
+        Sum sum = new Sum();
+        matrix.evaluateValue("c3", false, sum);
+        System.out.println(sum.getResult());
     }
 
 }

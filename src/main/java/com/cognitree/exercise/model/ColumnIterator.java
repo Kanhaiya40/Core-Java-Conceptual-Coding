@@ -8,8 +8,8 @@ import java.util.*;
  * An iterator over a column for a given row.
  */
 public class ColumnIterator implements Iterator<Column> {
-    public static final String FIELD_SEPARATOR = ",";
-    public static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
+    private static final String FIELD_SEPARATOR = ",";
+    private static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
     private final Scanner scanner;
     private final int traceRow;
     private int traceColumn= 1;

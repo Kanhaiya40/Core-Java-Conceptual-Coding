@@ -8,7 +8,7 @@ import java.util.Scanner;
  * An iterator over a Row.
  */
 public class RowIterator implements Iterator<Row> {
-    public static final String FIELD_SEPARATOR = ",";
+    private static final String FIELD_SEPARATOR = ",";
     private int traceRow = 0;
     private String next = null;
 

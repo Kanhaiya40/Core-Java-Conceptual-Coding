@@ -1,7 +1,7 @@
 package com.cognitree.exercise.model;
 
-import com.cognitree.exercise.core.exceptions.ParseException;
-
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -10,18 +10,16 @@ import java.util.Scanner;
  * An iterator over a field in a file.
  */
 public class FieldIterator implements Iterator<String> {
-    public static final String FIELD_SEPARATOR = ",";
     public static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
-    private final String fieldName;
-    private int traceRow = 0;
-    private int traceColumn = 1;
-    private String next = null;
 
     private final Scanner scanner;
 
-    public FieldIterator(Scanner scanner, String fieldName) {
-        this.fieldName = fieldName;
-        this.scanner = scanner;
+    public FieldIterator(String fieldName, String path) throws FileNotFoundException {
+        this.scanner = new Scanner(new File(getFileName(fieldName, path)));
+    }
+
+    private String getFileName(String fieldName, String path) {
+        return path+"/"+fieldName;
     }
 
     /**
@@ -33,38 +31,9 @@ public class FieldIterator implements Iterator<String> {
      */
     @Override
     public boolean hasNext() {
-        if (next != null) {
-            return true;
-        }
-        next = getNext();
-        return next != null;
+        return scanner.hasNext();
     }
 
-    private String getNext() {
-        traceRow++;
-        while (scanner.hasNext()) {
-            String line = scanner.nextLine();
-            while (line.isEmpty()) {
-                if (scanner.hasNext()) {
-                    line = scanner.nextLine();
-                } else {
-                    return null;
-                }
-            }
-            final String[] parts = line.split(FIELD_SEPARATOR);
-            for (int i = 1; i < parts.length; i++) {
-                traceColumn++;
-                final String[] keyValue = parts[i].split(COLUMN_KEY_VALUE_SEPARATOR);
-                if (keyValue.length != 2) {
-                    throw new ParseException(traceRow, traceColumn);
-                }
-                if (keyValue[0].trim().equals(fieldName)) {
-                    return keyValue[1];
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * Returns the next element in the iteration.
@@ -74,18 +43,11 @@ public class FieldIterator implements Iterator<String> {
      */
     @Override
     public String next() {
-        if (next != null) {
-            String value = next;
-            next = null;
-            return value;
-        } else {
-            next = getNext();
-            if (next != null) {
-                String value = next;
-                next = null;
-                return value;
-            } else
-                throw new NoSuchElementException();
+        if (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            return line.split(COLUMN_KEY_VALUE_SEPARATOR)[1];
+        }else {
+            throw new NoSuchElementException();
         }
     }
 }
