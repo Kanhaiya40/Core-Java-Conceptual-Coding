@@ -95,7 +95,7 @@ public class SparseMatrix {
      * @return FieldIterator
      * @throws IOException
      */
-    public FieldIterator valueIterator(String fieldName) throws IOException {
+    public FieldIterator fieldIterator(String fieldName) throws IOException {
         return new FieldIterator(fieldName, path);
     }
 
@@ -156,7 +156,7 @@ public class SparseMatrix {
     public void evaluateValue(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
         int traceRow=0;
         final Type type = getType(functions[0]);
-        final FieldIterator fieldIterator = this.valueIterator(columnName.trim());
+        final FieldIterator fieldIterator = this.fieldIterator(columnName.trim());
         while (fieldIterator.hasNext()) {
             traceRow++;
             final String value = fieldIterator.next();
@@ -194,12 +194,4 @@ public class SparseMatrix {
         }
         return null;
     }
-
-    public static void main(String[] args) throws Exception {
-        SparseMatrix matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources/matrix.txt", "/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources");
-        Sum sum = new Sum();
-        matrix.evaluateValue("c3", false, sum);
-        System.out.println(sum.getResult());
-    }
-
 }
