@@ -116,7 +116,7 @@ public class SparseMatrix {
                 if (column.getKey().equals(columnName)) {
                     try {
                         for (Function function : functions) {
-                            final Type type = getType(functions[0]);
+                            final Type type = getType(function);
                             if (type.getTypeName().equals("java.lang.Double")) {
                                 function.compute(column.getDoubleValue());
                             } else if (type.getTypeName().equals("java.lang.String")) {
@@ -154,7 +154,7 @@ public class SparseMatrix {
             final String value = fieldIterator.next();
             try {
                 for (Function function : functions) {
-                    final Type type = getType(functions[0]);
+                    final Type type = getType(function);
                     if (type.getTypeName().equals("java.lang.Double")) {
                         function.compute(Double.parseDouble(value));
                     } else if (type.getTypeName().equals("java.lang.String")) {
