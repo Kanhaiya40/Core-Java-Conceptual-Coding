@@ -11,6 +11,7 @@ import java.util.Scanner;
  */
 public class FieldIterator implements Iterator<String> {
     public static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
+    private String line;
 
     private final Scanner scanner;
 
@@ -19,7 +20,7 @@ public class FieldIterator implements Iterator<String> {
     }
 
     private String getFileName(String fieldName, String path) {
-        return path+"/"+fieldName;
+        return path + "/" + fieldName;
     }
 
     /**
@@ -31,7 +32,20 @@ public class FieldIterator implements Iterator<String> {
      */
     @Override
     public boolean hasNext() {
-        return scanner.hasNext();
+        if (line == null || line.isEmpty()) {
+            line = getNextElement();
+        }
+        return line != null && !line.isEmpty();
+    }
+
+    private String getNextElement() {
+        while (scanner.hasNext()) {
+            final String next = scanner.next();
+            if (next != null && !next.isEmpty()) {
+                return next;
+            }
+        }
+        return null;
     }
 
 
@@ -43,10 +57,11 @@ public class FieldIterator implements Iterator<String> {
      */
     @Override
     public String next() {
-        if (scanner.hasNext()) {
-            String line = scanner.nextLine();
-            return line.split(COLUMN_KEY_VALUE_SEPARATOR)[1];
-        }else {
+        if (line != null) {
+            String next = line;
+            line = null;
+            return next.split(COLUMN_KEY_VALUE_SEPARATOR)[1];
+        } else {
             throw new NoSuchElementException();
         }
     }

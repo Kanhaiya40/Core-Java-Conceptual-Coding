@@ -38,9 +38,9 @@ public class RowIterator implements Iterator<Row> {
         String next = null;
         while (scanner.hasNext()) {
             next = scanner.nextLine();
-            if(!next.isEmpty()){
+            if (!next.isEmpty()) {
                 break;
-            }else {
+            } else {
                 next = null;
             }
         }

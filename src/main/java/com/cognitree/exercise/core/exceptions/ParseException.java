@@ -10,6 +10,6 @@ public class ParseException extends RuntimeException {
     }
 
     public ParseException(int row, int column) {
-        super("Error parsing field at line number "+row+" column "+column);
+        super("Error parsing field at line number " + row + " column " + column);
     }
 }

@@ -4,7 +4,7 @@ import com.cognitree.exercise.core.Function;
 
 public class Average implements Function<Double> {
     public double result = 0;
-    private int count=0;
+    private int count = 0;
 
     @Override
     public void compute(Double value) {
@@ -14,6 +14,6 @@ public class Average implements Function<Double> {
 
     @Override
     public Double getResult() {
-        return result/count;
+        return result / count;
     }
 }

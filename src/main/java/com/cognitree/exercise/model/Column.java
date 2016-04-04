@@ -25,15 +25,15 @@ public class Column {
         this.value = value;
     }
 
-    public int getIntValue() throws NumberFormatException{
+    public int getIntValue() throws NumberFormatException {
         return Integer.parseInt(value);
     }
 
-    public float getFloatValue() throws NumberFormatException{
+    public float getFloatValue() throws NumberFormatException {
         return Float.parseFloat(value);
     }
 
-    public double getDoubleValue() throws NumberFormatException{
+    public double getDoubleValue() throws NumberFormatException {
         return Double.parseDouble(value);
     }
 

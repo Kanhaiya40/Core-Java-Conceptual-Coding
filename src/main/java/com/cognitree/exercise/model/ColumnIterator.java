@@ -2,7 +2,9 @@ package com.cognitree.exercise.model;
 
 import com.cognitree.exercise.core.exceptions.ParseException;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * An iterator over a column for a given row.
@@ -12,7 +14,7 @@ public class ColumnIterator implements Iterator<Column> {
     private static final String COLUMN_KEY_VALUE_SEPARATOR = "=";
     private final Scanner scanner;
     private final int traceRow;
-    private int traceColumn= 1;
+    private int traceColumn = 1;
 
     public ColumnIterator(Scanner scanner, int rowNumber) {
         this.scanner = scanner;
@@ -37,7 +39,7 @@ public class ColumnIterator implements Iterator<Column> {
      *
      * @return the next element in the iteration
      * @throws NoSuchElementException if the iteration has no more elements
-     * @throws ParseException if the iterator fails to parse column elements
+     * @throws ParseException         if the iterator fails to parse column elements
      */
     @Override
     public Column next() {

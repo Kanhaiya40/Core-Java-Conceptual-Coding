@@ -7,12 +7,10 @@ import com.cognitree.exercise.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -44,31 +42,47 @@ public class SparseMatrix {
         this.path = path;
     }
 
-
+    /**
+     * init method is used to map same column value in the sparse matrix in a separate file.
+     *
+     * @throws IOException
+     */
     private void init() throws IOException {
         int traceRow = 0, traceColumn = 0;
-        Scanner scanner = new Scanner(new File(fileName));
-        while (scanner.hasNext()) {
-            traceRow++;
-            final String line = scanner.nextLine();
-            final String[] parts = line.split(FIELD_SEPARATOR);
-            for (int i = 1; i < parts.length; i++) {
-                traceColumn++;
-                final String[] columnKeyValuePair = parts[i].split(COLUMN_KEY_VALUE_SEPARATOR);
-                if (columnKeyValuePair.length != 2) {
-                    throw new ParseException(traceRow, traceColumn);
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            while (true) {
+                traceRow++;
+                final String line = reader.readLine();
+                if (line == null) {
+                    break;
                 }
-                final String key = columnKeyValuePair[0];
-                if (columnWriterMap.containsKey(key)) {
-                    BufferedWriter writer = columnWriterMap.get(key);
-                    FileUtil.writeToFile(writer, parts[i]);
-                } else {
-                    File file = new File(getFileName(key));
-                    file.createNewFile();
-                    final BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                    columnWriterMap.put(key, writer);
-                    FileUtil.writeToFile(writer, parts[i]);
+                final String[] parts = line.split(FIELD_SEPARATOR);
+                for (int i = 1; i < parts.length; i++) {
+                    traceColumn++;
+                    final String[] columnKeyValuePair = parts[i].split(COLUMN_KEY_VALUE_SEPARATOR);
+                    if (columnKeyValuePair.length != 2) {
+                        throw new ParseException(traceRow, traceColumn);
+                    }
+                    final String key = columnKeyValuePair[0];
+                    if (columnWriterMap.containsKey(key)) {
+                        BufferedWriter writer = columnWriterMap.get(key);
+                        FileUtil.writeToFile(writer, parts[i]);
+                    } else {
+                        final String fileName = getFileName(key);
+                        File file = new File(fileName);
+                        final boolean isCreated = file.createNewFile();
+                        if (!isCreated) {
+                            logger.error("File {} already exists.", fileName);
+                            throw new FileAlreadyExistsException(fileName);
+                        }
+                        final BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                        columnWriterMap.put(key, writer);
+                        FileUtil.writeToFile(writer, parts[i]);
+                    }
                 }
+            }
+            for (BufferedWriter writer : columnWriterMap.values()) {
+                writer.close();
             }
         }
     }
@@ -125,12 +139,17 @@ public class SparseMatrix {
                                 function.compute(column.getFloatValue());
                             } else if (type.getTypeName().equals("java.lang.Integer")) {
                                 function.compute(column.getIntValue());
+                            } else {
+                                logger.error("Type {} in function is not supported. Supported types are Integer, String, Float and Double.");
+                                throw new UnsupportedOperationException();
                             }
                         }
                         break;
                     } catch (NumberFormatException e) {
                         if (!ignoreParseError) {
                             throw new InvalidOperationException(row.getName(), columnName);
+                        } else {
+                            logger.warn("Ignoring value at column {} while evaluting row {}.", row.getName(), columnName);
                         }
                     }
                 }
@@ -146,7 +165,7 @@ public class SparseMatrix {
      * @param functions        which you want to evaluate given columnName
      * @throws Exception
      */
-    public void evaluateValue(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
+    public void evaluateField(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
         int traceRow = 0;
         final FieldIterator fieldIterator = this.fieldIterator(columnName.trim());
         while (fieldIterator.hasNext()) {
@@ -163,11 +182,16 @@ public class SparseMatrix {
                         function.compute(Float.parseFloat(value));
                     } else if (type.getTypeName().equals("java.lang.Integer")) {
                         function.compute(Integer.parseInt(value));
+                    } else {
+                        logger.error("Type {} in function is not supported. Supported types are Integer, String, Float and Double.");
+                        throw new UnsupportedOperationException();
                     }
                 }
             } catch (NumberFormatException e) {
                 if (!ignoreParseError) {
                     throw new InvalidOperationException(traceRow, columnName);
+                } else {
+                    logger.warn("Ignoring value at column {} while evaluting row {}.", traceRow, columnName);
                 }
             }
         }
@@ -179,6 +203,6 @@ public class SparseMatrix {
             if (genericInterface.getTypeName().startsWith(Function.class.getCanonicalName()))
                 return ((ParameterizedType) genericInterface).getActualTypeArguments()[0];
         }
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

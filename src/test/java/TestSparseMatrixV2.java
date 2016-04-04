@@ -25,20 +25,20 @@ public class TestSparseMatrixV2 {
     @Test(expected = InvalidOperationException.class)
     public void validateInvalidOperationException() throws Exception {
         Sum sum = new Sum();
-        matrix.evaluateValue("c3", false, sum);
+        matrix.evaluateField("c3", false, sum);
     }
 
     @Test
     public void testSum() throws Exception {
         Sum sum = new Sum();
-        matrix.evaluateValue("c2", true, sum);
+        matrix.evaluateField("c2", true, sum);
         Assert.assertEquals(sum.getResult(), 655d, 2);
     }
 
     @Test
     public void testAvg() throws Exception {
         Average avg = new Average();
-        matrix.evaluateValue("c2", true, avg);
+        matrix.evaluateField("c2", true, avg);
         Assert.assertEquals(avg.getResult(), 163.75d, 2);
     }
 
@@ -46,7 +46,7 @@ public class TestSparseMatrixV2 {
     public void multiFunctionTest() throws Exception {
         Average avg = new Average();
         Sum sum = new Sum();
-        matrix.evaluateValue("c2", true, sum, avg);
+        matrix.evaluateField("c2", true, sum, avg);
         Assert.assertEquals(avg.getResult(), 163.75d, 2);
         Assert.assertEquals(sum.getResult(), 655d, 2);
 
@@ -55,7 +55,7 @@ public class TestSparseMatrixV2 {
     @Test
     public void testStdDev() throws Exception {
         StdDeviation stdDeviation = new StdDeviation();
-        matrix.evaluateValue("c2", true, stdDeviation);
+        matrix.evaluateField("c2", true, stdDeviation);
         Assert.assertEquals(stdDeviation.getResult(), 217.03d, 2);
     }
 
