@@ -1,7 +1,6 @@
 package com.cognitree.exercise.core.exceptions;
 
 public class InvalidOperationException extends Exception {
-    private String message = "Operation cannot be performed on this column";
     public InvalidOperationException() {
         super();
     }

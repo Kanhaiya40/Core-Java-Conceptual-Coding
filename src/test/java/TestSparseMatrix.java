@@ -1,19 +1,24 @@
 import com.cognitree.exercise.core.SparseMatrix;
 import com.cognitree.exercise.core.exceptions.InvalidOperationException;
 import com.cognitree.exercise.core.exceptions.ParseException;
-import com.cognitree.exercise.model.*;
-import com.cognitree.exercise.samples.*;
+import com.cognitree.exercise.model.Column;
+import com.cognitree.exercise.model.ColumnIterator;
+import com.cognitree.exercise.model.Row;
+import com.cognitree.exercise.model.RowIterator;
+import com.cognitree.exercise.samples.Average;
+import com.cognitree.exercise.samples.StdDeviation;
+import com.cognitree.exercise.samples.Sum;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class TestSparseMatrix {
-    private SparseMatrix matrix;
+    private static SparseMatrix matrix;
 
-    @Before
-    public void init() throws IOException {
+    @BeforeClass
+    public static void init() throws IOException {
         matrix = new SparseMatrix("/Users/ankitnanglia/workspace/cognitree/sandbox/src/main/resources/matrix.txt");
     }
 
