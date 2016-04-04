@@ -3,7 +3,6 @@ package com.cognitree.exercise.core;
 import com.cognitree.exercise.core.exceptions.InvalidOperationException;
 import com.cognitree.exercise.core.exceptions.ParseException;
 import com.cognitree.exercise.model.*;
-import com.cognitree.exercise.samples.Sum;
 import com.cognitree.exercise.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class SparseMatrix {
     }
 
     //for unit test case
-    public void initPath(String path){
+    public void initPath(String path) {
         this.path = path;
     }
 
@@ -75,7 +74,7 @@ public class SparseMatrix {
     }
 
     private String getFileName(String key) {
-        return path+"/"+key.trim();
+        return path + "/" + key.trim();
     }
 
     /**
@@ -108,7 +107,6 @@ public class SparseMatrix {
      * @throws Exception
      */
     public void evaluate(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
-        final Type type = getType(functions[0]);
         final RowIterator rowIterator = this.rowIterator();
         while (rowIterator.hasNext()) {
             final Row row = rowIterator.next();
@@ -117,20 +115,15 @@ public class SparseMatrix {
                 final Column column = columnIterator.next();
                 if (column.getKey().equals(columnName)) {
                     try {
-                        if (type.getTypeName().equals("java.lang.Double")) {
-                            for (Function function : functions) {
+                        for (Function function : functions) {
+                            final Type type = getType(functions[0]);
+                            if (type.getTypeName().equals("java.lang.Double")) {
                                 function.compute(column.getDoubleValue());
-                            }
-                        }else if (type.getTypeName().equals("java.lang.String")) {
-                            for (Function function : functions) {
+                            } else if (type.getTypeName().equals("java.lang.String")) {
                                 function.compute(column.getStringValue());
-                            }
-                        }else if (type.getTypeName().equals("java.lang.Float")) {
-                            for (Function function : functions) {
+                            } else if (type.getTypeName().equals("java.lang.Float")) {
                                 function.compute(column.getFloatValue());
-                            }
-                        }else if (type.getTypeName().equals("java.lang.Integer")) {
-                            for (Function function : functions) {
+                            } else if (type.getTypeName().equals("java.lang.Integer")) {
                                 function.compute(column.getIntValue());
                             }
                         }
@@ -154,27 +147,21 @@ public class SparseMatrix {
      * @throws Exception
      */
     public void evaluateValue(String columnName, boolean ignoreParseError, Function... functions) throws Exception {
-        int traceRow=0;
-        final Type type = getType(functions[0]);
+        int traceRow = 0;
         final FieldIterator fieldIterator = this.fieldIterator(columnName.trim());
         while (fieldIterator.hasNext()) {
             traceRow++;
             final String value = fieldIterator.next();
             try {
-                if (type.getTypeName().equals("java.lang.Double")) {
-                    for (Function function : functions) {
+                for (Function function : functions) {
+                    final Type type = getType(functions[0]);
+                    if (type.getTypeName().equals("java.lang.Double")) {
                         function.compute(Double.parseDouble(value));
-                    }
-                } else if (type.getTypeName().equals("java.lang.String")) {
-                    for (Function function : functions) {
+                    } else if (type.getTypeName().equals("java.lang.String")) {
                         function.compute(value);
-                    }
-                } else if (type.getTypeName().equals("java.lang.Float")) {
-                    for (Function function : functions) {
+                    } else if (type.getTypeName().equals("java.lang.Float")) {
                         function.compute(Float.parseFloat(value));
-                    }
-                } else if (type.getTypeName().equals("java.lang.Integer")) {
-                    for (Function function : functions) {
+                    } else if (type.getTypeName().equals("java.lang.Integer")) {
                         function.compute(Integer.parseInt(value));
                     }
                 }
