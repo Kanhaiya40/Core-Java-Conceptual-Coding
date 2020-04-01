@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class CustomizeSerialization {
-    public static void main(String[] args) throws Exception, IOException, ClassNotFoundException {
+    public static void main(String[] args) throws  IOException, ClassNotFoundException {
         Customer c1=new Customer();
         System.out.println(c1.Username+"\t"+c1.pass);
         FileOutputStream f1=new FileOutputStream("Serialization2");
@@ -11,8 +11,6 @@ public class CustomizeSerialization {
         ObjectInputStream ois=new ObjectInputStream(f2);
         Customer c2=(Customer) ois.readObject();
         System.out.println(c2.Username+"\t"+c2.pass);
-
-
 
     }
 }
