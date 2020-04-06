@@ -1,4 +1,5 @@
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -35,6 +36,18 @@ public class EnumerationCursor {
                 System.out.println(i1);
             }
 
+        }
+        System.out.println("Hashing Enumeration");
+        Hashtable h1=new Hashtable();
+        h1.put("Kanhaiya",10);
+        h1.put("Bipul",12);
+        h1.put("Rakesh",15);
+        h1.put("Rohan",16);
+        h1.put("Ramesh",17);
+        Enumeration e3=h1.elements();
+        while(e3.hasMoreElements())
+        {
+            System.out.println(e3.nextElement());
         }
     }
 }
