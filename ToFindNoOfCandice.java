@@ -1,5 +1,3 @@
-import sun.java2d.loops.ScaledBlit;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -10,7 +8,7 @@ public class ToFindNoOfCandice {
         System.out.println("Enter The no. Of Student:");
         int n=sc.nextInt();
         int[] x=new int[n];
-        System.out.println("Student Performance With Names:");
+        System.out.println("Student Names With Performances:");
         for (int i = 0; i < x.length; i++) {
             System.out.print("Student["+i+"]\t");
             x[i]=sc.nextInt();
@@ -33,7 +31,7 @@ public class ToFindNoOfCandice {
         }
         for (int c1:c
              ) {
-            numberOfCandice=numberOfCandice+c1;
+            numberOfCandice=numberOfCandice+(long) c1;
         }
         System.out.println("Minimum Number Of Candice Should Kinder Teacher Bring to School is:"+numberOfCandice);
 
