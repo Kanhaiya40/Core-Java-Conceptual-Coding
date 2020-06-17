@@ -1,4 +1,4 @@
-package ProgrammingAndDataStructure;
+package programminganddatastructure;
 
 import java.util.Scanner;
 import java.util.Stack;

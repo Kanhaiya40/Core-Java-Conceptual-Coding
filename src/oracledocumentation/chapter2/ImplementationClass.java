@@ -27,7 +27,9 @@ public class ImplementationClass extends Transportation implements Transport {
     }  // Overring Method From Transport Interface
 
     @Override
-    public void timing() { System.out.println("Timing=6:00 am -To- 7:00 pm"); }  // Overring Method From Transport Interface
+    public void timing() {
+        System.out.println("Timing=6:00 am -To- 7:00 pm");
+    }  // Overring Method From Transport Interface
 
     @Override
     public void restDay() {

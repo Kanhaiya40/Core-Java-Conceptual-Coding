@@ -9,18 +9,18 @@ import java.util.Scanner;
 public class SummationUsingScanning {
     public static void main(String[] args) {
         double sum = 0;
-            try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("input.txt")))) {
-                    scanner.useLocale(Locale.US);
-                    while (scanner.hasNext()) {
-                            if (scanner.hasNextDouble()) {
-                                    sum = sum + scanner.nextDouble();
-                            } else {
-                                    scanner.next();
-                            }
-                    }
-            } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("input.txt")))) {
+            scanner.useLocale(Locale.US);
+            while (scanner.hasNext()) {
+                if (scanner.hasNextDouble()) {
+                    sum = sum + scanner.nextDouble();
+                } else {
+                    scanner.next();
+                }
             }
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
         System.out.println(sum);
 
     }
