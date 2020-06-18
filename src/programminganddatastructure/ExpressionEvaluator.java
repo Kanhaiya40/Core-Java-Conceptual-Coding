@@ -51,43 +51,44 @@ public class ExpressionEvaluator {
             }
         }
         char[] tokens = updatedExpression.toCharArray();
-        for (Character ch : tokens
-        ) {
-            if (ch == ' ') {
+        for (int i = 0; i < tokens.length; i++) {
+            if (tokens[i] == ' ')
                 continue;
-            }
-            if (ch == '(') {
-                stack.push(ch);
-            } else if (Character.isDigit(ch)) {
-                int var = Integer.parseInt(String.valueOf(ch));
-                variablesValue.push(var);
-            } else if (ch == '*' || ch == '-' || ch == '/' || ch == '+') {
-                while (!stack.isEmpty() && operatorPrecedence(stack.peek()) >= operatorPrecedence(ch)) {
+            if (tokens[i] >= '0' && tokens[i] <= '9') {
+                StringBuilder stringBuilder = new StringBuilder();
+                while (i < tokens.length && Character.isDigit(tokens[i]) && (tokens[i] != '+' || tokens[i] != '-' || tokens[i] != '*' || tokens[i] != '/' || tokens[i] != '(' || tokens[i] != ')' || tokens[i] != '\0')) {
+                    stringBuilder.append(tokens[i++]);
+                }
+                i--;
+                variablesValue.push(Integer.parseInt(stringBuilder.toString()));
+            } else if (tokens[i] == '(')
+                stack.push(tokens[i]);
+            else if (tokens[i] == ')') {
+                while (stack.peek() != '(')
                     performCommonOperation();
-                }
-                stack.push(ch);
-            } else {
-                performCommonOperation();
-                if (!stack.isEmpty()) {
-                    stack.pop();
-                }
+                stack.pop();
+            } else if (tokens[i] == '+' || tokens[i] == '-' ||
+                    tokens[i] == '*' || tokens[i] == '/') {
+                while (!stack.empty() && opretorPrecedence(tokens[i], stack.peek()))
+                    performCommonOperation();
+                stack.push(tokens[i]);
             }
         }
-        while (!stack.isEmpty()) {
+        while (!stack.empty())
             performCommonOperation();
-        }
-        return variablesValue.peek();
+
+        // Top of 'values' contains result, return it
+        return variablesValue.pop();
     }
 
     /**
-     * @param ch--It is operator on which we are performing operator precedence operation
+     * @param op1--Operator 1
+     * @param op2--Operator 2
      */
-    private static int operatorPrecedence(char ch) {
-        if (ch == '+' || ch == '-')
-            return 1;        /* It Returns One And This is Trailing Commnets */
-        if (ch == '/' || ch == '*')
-            return 2;
-        return 0;
+    private static boolean opretorPrecedence(char op1, char op2) {
+        if (op2 == '(' || op2 == ')')
+            return false;
+        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
     }
 
     /**
@@ -104,7 +105,6 @@ public class ExpressionEvaluator {
         operator = stack.peek();
         stack.pop();
         variablesValue.push(applyOp(value1, value2, operator));
-
     }
 
     /**
@@ -117,10 +117,7 @@ public class ExpressionEvaluator {
             case '+':
                 return a + b;
             case '-':
-                if (b > a)
-                    return a - b;
-                else
-                    return b - a;
+                return a - b;
             case '*':
                 return a * b;
             case '/':
