@@ -11,10 +11,10 @@ import java.util.Stack;
 public class ExpressionEvaluator {
     private final Stack<Character> stack = new Stack<>();      // to hold operators only
     private final Stack<Integer> variablesValue = new Stack<>();  // to hold numerical value
-    private final ExpressionParser expressionParser;
+    private final ExpressionParser expressionParser;  // created instance of Expression parser Object
 
     ExpressionEvaluator(ExpressionParser expressionParser) {
-        this.expressionParser = expressionParser;
+        this.expressionParser = expressionParser;        // passing ExpressionParser to paramatrised constructor
     }
 
     /**
