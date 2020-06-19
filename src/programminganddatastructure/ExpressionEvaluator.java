@@ -1,6 +1,6 @@
 package programminganddatastructure;
 
-import java.util.*;
+import java.util.Stack;
 
 /**
  * Problem--
@@ -9,31 +9,46 @@ import java.util.*;
  * Support binary arithmetic operations, parenthesis and operator precedence
  */
 public class ExpressionEvaluator {
-    static String expression;
-    static Scanner scanner = new Scanner(System.in);
-    static Stack<Character> stack = new Stack<>();      // to hold operators only
-    static Stack<Integer> variablesValue = new Stack<>();  // to hold numerical value
+    private final Stack<Character> stack = new Stack<>();      // to hold operators only
+    private final Stack<Integer> variablesValue = new Stack<>();  // to hold numerical value
+    private final ExpressionParser expressionParser;
 
-    ExpressionEvaluator(String expression) {
-        ExpressionEvaluator.expression = expression;
+    ExpressionEvaluator(ExpressionParser expressionParser) {
+        this.expressionParser = expressionParser;
     }
 
     /**
-     * Tihs is simply main method of the program
-     *
-     * @param args--this is command line argument
+     * @param op1--Operator 1
+     * @param op2--Operator 2
      */
-    public static void main(String[] args) {
-        System.out.println("Enter an expression: ");
-        String expr = scanner.nextLine();
-        ExpressionEvaluator evaluator = new ExpressionEvaluator(expr);
-        Set<String> variables = evaluator.getVariables();
-        Map<String, Number> values = new HashMap<>();
-        for (String variable : variables) {
-            System.out.print("Enter value for  " + variable + ":");
-            values.put(variable, scanner.nextInt());
+    private static boolean opretorPrecedence(char op1, char op2) {
+        if (op2 == '(' || op2 == ')')
+            return false;
+        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
+    }
+
+    /**
+     * @param a--It  is first top value of Integral stack
+     * @param b--It  is second top value of Integral stack
+     * @param op--It is top of character stack
+     */
+    private static int applyOp(int a, int b, char op) {
+        switch (op) {
+            case '+':
+                return a + b;
+            case '-':
+                return a - b;
+            case '*':
+                return a * b;
+            case '/':
+                return a / b;
+            default:
+                return 0;
         }
-        System.out.println(evaluteExpression(values));
+    }
+
+    public String getVariablesWithValue() {
+        return expressionParser.getVariables();
     }
 
     /**
@@ -41,15 +56,7 @@ public class ExpressionEvaluator {
      * this method execution we are getting value of the expression
      * for which we are performing this program
      */
-    private static int evaluteExpression(Map<String, Number> map) {
-        String updatedExpression = expression;
-        StringTokenizer strings = new StringTokenizer(updatedExpression, "+-*/[]() ");
-        while (strings.hasMoreElements()) {
-            String temp = strings.nextToken();
-            if (map.containsKey(temp)) {
-                updatedExpression = updatedExpression.replace(temp, String.valueOf(map.get(temp)));
-            }
-        }
+    public int evaluteExpression(String updatedExpression) {
         char[] tokens = updatedExpression.toCharArray();
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i] == ' ')
@@ -82,19 +89,9 @@ public class ExpressionEvaluator {
     }
 
     /**
-     * @param op1--Operator 1
-     * @param op2--Operator 2
-     */
-    private static boolean opretorPrecedence(char op1, char op2) {
-        if (op2 == '(' || op2 == ')')
-            return false;
-        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
-    }
-
-    /**
      * This function is common throughout the excecution
      */
-    private static void performCommonOperation() {
+    private void performCommonOperation() {
         int value1;
         int value2;
         char operator;
@@ -105,34 +102,5 @@ public class ExpressionEvaluator {
         operator = stack.peek();
         stack.pop();
         variablesValue.push(applyOp(value1, value2, operator));
-    }
-
-    /**
-     * @param a--It  is first top value of Integral stack
-     * @param b--It  is second top value of Integral stack
-     * @param op--It is top of character stack
-     */
-    private static int applyOp(int a, int b, char op) {
-        switch (op) {
-            case '+':
-                return a + b;
-            case '-':
-                return a - b;
-            case '*':
-                return a * b;
-            case '/':
-                return a / b;
-            default:
-                return 0;
-        }
-    }
-
-    private Set<String> getVariables() {
-        Set<String> setOfVariables = new HashSet<>();
-        StringTokenizer strings = new StringTokenizer(expression, "+-*/[]() ");
-        while (strings.hasMoreElements()) {
-            setOfVariables.add(strings.nextToken());
-        }
-        return setOfVariables;
     }
 }
