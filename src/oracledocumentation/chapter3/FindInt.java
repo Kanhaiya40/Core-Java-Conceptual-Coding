@@ -15,7 +15,7 @@ public class FindInt {
     }
 
     public static void main(String[] args) {
-        Path file = Paths.get("datafile");
+        Path file = Paths.get("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/datafile");
         int num = new FindInt(file).seek();
         System.out.println("The value is " + num);
     }

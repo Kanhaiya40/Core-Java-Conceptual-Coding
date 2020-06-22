@@ -23,8 +23,8 @@ public class WritingAndReadingFileDataUsingByteStream {
 
     public void readAndWriteData() throws IOException {
         try {
-            fileInputStream = new FileInputStream("OutFile.txt");
-            fileOutputStream = new FileOutputStream("input.txt");
+            fileInputStream = new FileInputStream("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/OutFile.txt");
+            fileOutputStream = new FileOutputStream("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/input.txt");
             int number = fileInputStream.read();
             while (number != -1) {
                 fileOutputStream.write(number);

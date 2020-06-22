@@ -14,7 +14,7 @@ import static sun.nio.ch.IOStatus.EOF;
 public class TotalNoOfGivenCharacterPresentInGivenFile {
     public static void main(String[] args) throws IOException {
         int count = 0;
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("GivenFile.txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/GivenFile.txt"));
         char ch = args[0].charAt(0);
         int stream = bufferedReader.read();
         char ch1;

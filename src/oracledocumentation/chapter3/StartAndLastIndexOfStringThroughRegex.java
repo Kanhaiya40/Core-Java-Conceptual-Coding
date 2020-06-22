@@ -18,7 +18,8 @@ public class StartAndLastIndexOfStringThroughRegex {
         Pattern pattern = Pattern.compile("foo");
         Matcher matcher = pattern.matcher("foo");
         while (matcher.find()) {
-            System.out.println("FirstIndex=" + matcher.start() + "\nLastIndex=" + matcher.end());
+            System.out.println("FirstIndex=" + matcher.start() + "" +
+                    "\nLastIndex=" + matcher.end());
         }
     }
 }

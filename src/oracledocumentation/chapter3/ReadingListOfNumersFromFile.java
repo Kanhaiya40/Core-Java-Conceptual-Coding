@@ -31,7 +31,7 @@ public class ReadingListOfNumersFromFile {
         PrintWriter out = null;
         try {
             System.out.println("Entering try statement");
-            out = new PrintWriter(new FileWriter("OutFile.txt"));
+            out = new PrintWriter(new FileWriter("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/OutFile.txt"));
             for (int i = 0; i < SIZE; i++)
                 out.println("Value at: " + i + " = " + list.get(i));
         } catch (IndexOutOfBoundsException e) {

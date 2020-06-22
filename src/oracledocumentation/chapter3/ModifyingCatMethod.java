@@ -40,7 +40,7 @@ public class ModifyingCatMethod {
     }
 
     public static void main(String[] args) {
-        File file = new File("input.txt");
+        File file = new File("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/input.txt");
         try {
             PrintWriter printWriter = new PrintWriter(file);
             printWriter.print("This row contain 5 elements");

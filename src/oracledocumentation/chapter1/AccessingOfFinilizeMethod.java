@@ -13,7 +13,7 @@ public class AccessingOfFinilizeMethod {
     static {
         try {
             /* allocating memory for stream Object refrence */
-            fileWriter = new FileWriter("abc.txt");
+            fileWriter = new FileWriter("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/abc.txt");
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

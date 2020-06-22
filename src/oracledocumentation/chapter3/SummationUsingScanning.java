@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class SummationUsingScanning {
     public static void main(String[] args) {
         double sum = 0;
-        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("input.txt")))) {
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/input.txt")))) {
             scanner.useLocale(Locale.US);
             while (scanner.hasNext()) {
                 if (scanner.hasNextDouble()) {
