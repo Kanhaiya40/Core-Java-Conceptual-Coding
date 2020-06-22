@@ -1,6 +1,8 @@
 package programminganddatastructure;
 
-import java.util.Stack;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Problem--
@@ -9,19 +11,27 @@ import java.util.Stack;
  * Support binary arithmetic operations, parenthesis and operator precedence
  */
 public class ExpressionEvaluator {
+    private final String expression;
     private final Stack<Character> stack = new Stack<>();      // to hold operators only
     private final Stack<Integer> variablesValue = new Stack<>();  // to hold numerical value
     private final ExpressionParser expressionParser;  // created instance of Expression parser Object
 
-    ExpressionEvaluator(ExpressionParser expressionParser) {
-        this.expressionParser = expressionParser;        // passing ExpressionParser to paramatrised constructor
+    ExpressionEvaluator(String expression) {
+        this.expression = expression;
+        expressionParser = new ExpressionParser();
+    }
+
+    private static boolean isNumeric(String token) {
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        Matcher matcher = pattern.matcher(token);
+        return matcher.matches();
     }
 
     /**
      * @param op1--Operator 1
      * @param op2--Operator 2
      */
-    private static boolean opretorPrecedence(char op1, char op2) {
+    private static boolean operatorPrecedence(char op1, char op2) {
         if (op2 == '(' || op2 == ')')
             return false;
         return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
@@ -47,8 +57,19 @@ public class ExpressionEvaluator {
         }
     }
 
-    public String getVariablesWithValue() {
-        return expressionParser.getVariables();
+    public Set<String> setOfVariables() {
+        Set<String> onlyVariables = new HashSet<>();
+        StringTokenizer strings = new StringTokenizer(expression, "+-*/[]() ");
+        do {
+            String token = strings.nextToken();  // Taking one token at a time
+            if (isNumeric(token)) {
+                System.out.print("");
+                // if a string is numeric then do nothing continue the flow of prgram
+            } else {
+                onlyVariables.add(token);
+            }
+        } while (strings.hasMoreElements());
+        return onlyVariables;
     }
 
     /**
@@ -56,7 +77,8 @@ public class ExpressionEvaluator {
      * this method execution we are getting value of the expression
      * for which we are performing this program
      */
-    public int evaluteExpression(String updatedExpression) {
+    public Number evaluateExpression(Map<String, Number> values) {
+        String updatedExpression = expressionParser.getParsed(values, expression);
         char[] tokens = updatedExpression.toCharArray();
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i] == ' ')
@@ -76,7 +98,7 @@ public class ExpressionEvaluator {
                 stack.pop();
             } else if (tokens[i] == '+' || tokens[i] == '-' ||
                     tokens[i] == '*' || tokens[i] == '/') {
-                while (!stack.empty() && opretorPrecedence(tokens[i], stack.peek()))
+                while (!stack.empty() && operatorPrecedence(tokens[i], stack.peek()))
                     performCommonOperation();
                 stack.push(tokens[i]);
             }
