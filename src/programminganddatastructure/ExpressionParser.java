@@ -9,17 +9,18 @@ import java.util.*;
 public class ExpressionParser {
 
     private final String expression;
-    private final Operator operator;
-    private final Stack<Token> postFix = new Stack<>();
-    private final Stack<Token> stack = new Stack<>();
+
     private final Set<String> variables = new HashSet<>();
 
     public ExpressionParser(String expression) {
         this.expression = expression;
-        operator = new Operator("");
     }
 
     public Stack<Token> parse() {
+
+        Stack<Token> postFix = new Stack<>();
+        Stack<Token> temporaryStack = new Stack<>();
+        Operator operator = new Operator("");
         for (Token token : getTokens()) {
             if (token instanceof Operand) {
                 if (token instanceof Variable) {
@@ -28,25 +29,28 @@ public class ExpressionParser {
                 } else if (token instanceof Value) {
                     postFix.push(token);
                 }
-            } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) != 0 && operator.hasPrecedence(((Operator) token).getValue()) != 3) {
-                while (!stack.isEmpty() && operator.hasPrecedence(((Operator) stack.peek()).getValue()) > operator.hasPrecedence(((Operator) token).getValue()) && operator.hasPrecedence(((Operator) stack.peek()).getValue()) != 0) {
-                    postFix.push(stack.pop());
+            } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) != 0
+                    && operator.hasPrecedence(((Operator) token).getValue()) != 3) {
+                while (!temporaryStack.isEmpty() && operator.hasPrecedence(((Operator) temporaryStack.peek()).getValue())
+                        > operator.hasPrecedence(((Operator) token).getValue())
+                        && operator.hasPrecedence(((Operator) temporaryStack.peek()).getValue()) != 0) {
+                    postFix.push(temporaryStack.pop());
                 }
-                stack.push(token);
+                temporaryStack.push(token);
             } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) == 3) {
-                Token currentToken = stack.pop();
+                Token currentToken = temporaryStack.pop();
                 while (operator.hasPrecedence(((Operator) currentToken).getValue()) != 0) {
                     postFix.push(currentToken);
-                    currentToken = stack.pop();
+                    currentToken = temporaryStack.pop();
                 }
             } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) == 0) {
-                stack.push(token);
+                temporaryStack.push(token);
             } else {
                 postFix.push(token);
             }
         }
-        while (!stack.isEmpty()) {
-            postFix.push(stack.pop());
+        while (!temporaryStack.isEmpty()) {
+            postFix.push(temporaryStack.pop());
         }
         return postFix;
     }
@@ -67,10 +71,10 @@ public class ExpressionParser {
 
     private List<Token> getTokens() {
         List<Token> listOfTokens = new ArrayList<>();
-        String[] splitedString = expression.split("((?<=\\+)|(?=\\+))|((?<=-)|(?=-))"
+        String[] tokens = expression.split("((?<=\\+)|(?=\\+))|((?<=-)|(?=-))"
                 + "|((?<=\\*)|(?=\\*))|((?<=/)|(?=/))"
                 + "|((?<=\\()|(?=\\())|((?<=\\))|(?=\\)))");
-        for (String token : splitedString) {
+        for (String token : tokens) {
             if (token.matches("[a-zA-z]+")) {
                 listOfTokens.add(new Variable(token));
             } else if (isNumber(token)) {

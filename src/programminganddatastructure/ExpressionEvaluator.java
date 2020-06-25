@@ -8,25 +8,25 @@ public class ExpressionEvaluator {
 
     private final ExpressionParser expressionParser;
     private final Stack<Token> postFix;
-    private final Stack<Double> stack = new Stack<>();
+    private final Stack<Double> stackWithDoubleValue = new Stack<>();
 
     ExpressionEvaluator(String expression) {
         this.expressionParser = new ExpressionParser(expression);
         postFix = expressionParser.parse();
     }
 
-    private static double applyOp(double a, double b, char op) {
-        switch (op) {
+    private static double applyOp(double lhs, double rhs, char operator) {
+        switch (operator) {
             case '+':
-                return a + b;
+                return lhs + rhs;
             case '-':
-                if (a > b)
-                    return a - b;
-                else return b - a;
+                if (lhs > rhs)
+                    return lhs - rhs;
+                else return rhs - lhs;
             case '*':
-                return a * b;
+                return lhs * rhs;
             case '/':
-                return a / b;
+                return lhs / rhs;
             default:
                 return 0;
         }
@@ -39,13 +39,13 @@ public class ExpressionEvaluator {
     public Double evaluate(Map<String, Double> variablesWithValue) {
         for (Token instantPosition : postFix) {
             if (instantPosition instanceof Variable && variablesWithValue.containsKey(((Variable) instantPosition).getValue())) {
-                stack.push(variablesWithValue.get(((Variable) instantPosition).getValue()));
+                stackWithDoubleValue.push(variablesWithValue.get(((Variable) instantPosition).getValue()));
             } else if (instantPosition instanceof Value && isNumber(((Value) instantPosition).getValue().toString())) {
-                stack.push(Double.parseDouble(((Value) instantPosition).getValue().toString()));
+                stackWithDoubleValue.push(Double.parseDouble(((Value) instantPosition).getValue().toString()));
             } else if (instantPosition instanceof Operator)
                 performCommonOperation(((Operator) instantPosition).getValue().charAt(0));
         }
-        return stack.peek();
+        return stackWithDoubleValue.peek();
     }
 
     private boolean isNumber(String value) {
@@ -58,11 +58,11 @@ public class ExpressionEvaluator {
         return numeric;
     }
 
-    private void performCommonOperation(char operartor) {
-        double value1;
-        double value2;
-        value1 = stack.pop();
-        value2 = stack.pop();
-        stack.push(applyOp(value1, value2, operartor));
+    private void performCommonOperation(char operate) {
+        double firstElementOfStack;
+        double secondElementOfStack;
+        firstElementOfStack = stackWithDoubleValue.pop();
+        secondElementOfStack = stackWithDoubleValue.pop();
+        stackWithDoubleValue.push(applyOp(firstElementOfStack, secondElementOfStack, operate));
     }
 }
