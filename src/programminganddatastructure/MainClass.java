@@ -16,12 +16,12 @@ public class MainClass {
         System.out.println("Enter an expression: ");
         String expr = scanner.nextLine();  // Taking input as expression
         ExpressionEvaluator evaluator = new ExpressionEvaluator(expr);
-        Set<String> variables = evaluator.setOfVariables();
-        Map<String, Number> values = new HashMap<>();
+        Set<String> variables = evaluator.getVariables();
+        Map<String, Double> values = new HashMap<>();
         for (String variable : variables) {
             System.out.println("Enter Value for " + variable + ":");
-            values.put(variable, scanner.nextInt());
+            values.put(variable, scanner.nextDouble());
         }
-        System.out.println("Value :" + evaluator.evaluateExpression(values));
+        System.out.println(evaluator.evaluate(values));
     }
 }
