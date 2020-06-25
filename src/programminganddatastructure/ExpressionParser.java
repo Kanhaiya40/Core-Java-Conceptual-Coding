@@ -29,15 +29,15 @@ public class ExpressionParser {
                     postFix.push(token);
                 }
             } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) != 0 && operator.hasPrecedence(((Operator) token).getValue()) != 3) {
-                while (!stack.isEmpty() && operator.hasPrecedence(((Operator) stack.peek()).getValue()) < operator.hasPrecedence(((Operator) token).getValue()) && operator.hasPrecedence(((Operator) stack.peek()).getValue()) != 0) {
+                while (!stack.isEmpty() && operator.hasPrecedence(((Operator) stack.peek()).getValue()) > operator.hasPrecedence(((Operator) token).getValue()) && operator.hasPrecedence(((Operator) stack.peek()).getValue()) != 0) {
                     postFix.push(stack.pop());
                 }
                 stack.push(token);
             } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) == 3) {
-                Token token1 = stack.pop();
-                while (operator.hasPrecedence(((Operator) token1).getValue()) != 0) {
-                    postFix.push(token1);
-                    token1 = stack.pop();
+                Token currentToken = stack.pop();
+                while (operator.hasPrecedence(((Operator) currentToken).getValue()) != 0) {
+                    postFix.push(currentToken);
+                    currentToken = stack.pop();
                 }
             } else if (token instanceof Operator && operator.hasPrecedence(((Operator) token).getValue()) == 0) {
                 stack.push(token);
@@ -48,7 +48,6 @@ public class ExpressionParser {
         while (!stack.isEmpty()) {
             postFix.push(stack.pop());
         }
-        System.out.println(postFix);
         return postFix;
     }
 
@@ -79,7 +78,6 @@ public class ExpressionParser {
             } else
                 listOfTokens.add(new Operator(token));
         }
-        System.out.println(listOfTokens.toString());
         return listOfTokens;
     }
 }
