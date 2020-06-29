@@ -1,40 +1,49 @@
 package moving_average;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Arrays;
+import java.util.Iterator;
 
-public class CircularList<E> {
+public class CircularList<E> implements Iterable<E> {
 
-    private final Queue<E> queue;
+    private final Object[] customArray;
+    private int rear;
 
-    CircularList() {
-        this.queue = new LinkedList<>();
+
+    CircularList(int size) {
+        customArray = new Object[size];
+        this.rear = -1;
     }
 
     public void add(E item) {
-        queue.add(item);
-    }
-
-    public void remove() {
-        queue.remove();
-    }
-
-    public void extendElementOfSeries(E item) {
-        queue.remove();
-        queue.add(item);
+        rear = (rear + 1) % customArray.length;
+        customArray[rear] = item;
     }
 
     @SuppressWarnings("unchecked")
-    public E getElement(final int index) {
-        E[] arrayOfQueueElements = (E[]) queue.toArray();
-        return arrayOfQueueElements[(index) % arrayOfQueueElements.length];
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+
+            int temporaryIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return temporaryIndex < customArray.length;
+            }
+
+            @Override
+            public E next() {
+                if (hasNext())
+                    return (E) customArray[temporaryIndex++];
+                return null;
+            }
+        };
     }
 
     public int size() {
-        return queue.size();
+        return customArray.length;
     }
 
     public String toString() {
-        return "" + queue.toString() + "";
+        return "" + Arrays.toString(customArray) + "";
     }
 }
