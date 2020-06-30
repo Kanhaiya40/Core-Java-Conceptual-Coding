@@ -2,56 +2,46 @@ package stack_implementation;
 
 import java.util.Arrays;
 
-public class MyOwnStack<E> {
+public class Stacks<E> {
 
     private final Object[] array;
     private int startingIndex;
     private int lastIndex;
-    private int firstStackSize = 0;
-    private int secondStackSize = 0;
 
-    MyOwnStack(int size) {
+    Stacks(int size) {
         array = new Object[size];
         startingIndex = -1;
-        lastIndex = array.length;
+        lastIndex = array.length-1;
     }
 
     public void pushToStack1(E item) {
-        if (startingIndex > lastIndex) {
-            System.out.println("OverFlow Message No Element Can be inserted Now");
-            System.exit(0);
+        if (startingIndex >= lastIndex) {
+            throw new ArrayIndexOutOfBoundsException();
         } else {
-            firstStackSize++;
             array[++startingIndex] = item;
         }
     }
 
     public void pushToStack2(E item) {
-        if (startingIndex > lastIndex) {
-            System.out.println("OverFlow Message No Element Can be inserted Now");
-            System.exit(0);
+        if ( lastIndex <= startingIndex) {
+            throw new ArrayIndexOutOfBoundsException();
         } else {
-            secondStackSize++;
-            array[--lastIndex] = item;
+            array[lastIndex--] = item;
         }
     }
 
     public void popFromStack1() {
         if (startingIndex == -1) {
             System.out.println("UnderFlow Stack is Empty");
-        } else if (startingIndex == lastIndex) {
-            array[--startingIndex] = null;
-
         }
+        array[startingIndex--] = null;
     }
 
     public void popFromStack2() {
         if (startingIndex == -1) {
             System.out.println("UnderFlow Stack is Empty");
-        } else if (startingIndex == lastIndex) {
-            array[lastIndex] = null;
-            lastIndex = lastIndex + 1;
         }
+        array[lastIndex++] = null;
     }
 
 
@@ -71,10 +61,10 @@ public class MyOwnStack<E> {
     }
 
     public int sizeOfStack1() {
-        return firstStackSize;
+        return startingIndex + 1;
     }
 
     public int sizeOfStack2() {
-        return secondStackSize;
+        return array.length - lastIndex;
     }
 }
