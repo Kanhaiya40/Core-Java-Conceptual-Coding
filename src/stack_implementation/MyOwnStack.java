@@ -1,37 +1,67 @@
 package stack_implementation;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
-public class MyOwnStack<E> implements Iterable<E> {
+public class MyOwnStack<E> {
     private final Object[] array;
-    private int top;
+    private int startingIndex;
+    private int lastIndex;
+    private int firstStackSize = 0;
+    private int secondStackSize = 0;
 
     MyOwnStack(int size) {
         array = new Object[size];
-        top = -1;
+        startingIndex = -1;
+        lastIndex = array.length;
     }
 
-    public void push(E item) {
-        if (top == -1) {
-            top++;
-        }
-        array[top++] = item;
-    }
-
-    public void pop() {
-        if (top == -1) {
-            System.out.println("UnderFlow Stack is Empty");
+    public void pushToStack1(E item) {
+        if (startingIndex > lastIndex) {
+            System.out.println("OverFlow Message No Element Can be inserted Now");
+            System.exit(0);
         } else {
-            array[top] = null;
-            top = top - 1;
+            firstStackSize++;
+            array[++startingIndex] = item;
+        }
+    }
+
+    public void pushToStack2(E item) {
+        if (startingIndex > lastIndex) {
+            System.out.println("OverFlow Message No Element Can be inserted Now");
+            System.exit(0);
+        } else {
+            secondStackSize++;
+            array[--lastIndex] = item;
+        }
+    }
+
+    public void popFromStack1() {
+        if (startingIndex == -1) {
+            System.out.println("UnderFlow Stack is Empty");
+        } else if (startingIndex == lastIndex) {
+            array[--startingIndex] = null;
+
+        }
+    }
+
+    public void popFromStack2() {
+        if (startingIndex == -1) {
+            System.out.println("UnderFlow Stack is Empty");
+        } else if (startingIndex == lastIndex) {
+            array[lastIndex] = null;
+            lastIndex = lastIndex + 1;
         }
     }
 
 
     @SuppressWarnings("unchecked")
-    public E peek() {
-        return (E) array[top];
+    public E peekOfStack1() {
+        return (E) array[startingIndex];
+    }
+
+    @SuppressWarnings("unchecked")
+    public E peekOfStack2() {
+        return (E) array[lastIndex];
     }
 
     @Override
@@ -39,22 +69,11 @@ public class MyOwnStack<E> implements Iterable<E> {
         return "" + Arrays.toString(array);
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        top = 0;
-        return new Iterator<E>() {
-            @Override
-            public boolean hasNext() {
-                return array[top] != null;
-            }
+    public int sizeOfStack1() {
+        return firstStackSize;
+    }
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public E next() {
-                if (hasNext())
-                    return (E) array[top++];
-                return null;
-            }
-        };
+    public int sizeOfStack2() {
+        return secondStackSize;
     }
 }
