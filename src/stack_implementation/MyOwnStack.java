@@ -3,6 +3,7 @@ package stack_implementation;
 import java.util.Arrays;
 
 public class MyOwnStack<E> {
+
     private final Object[] array;
     private int startingIndex;
     private int lastIndex;

@@ -1,6 +1,7 @@
 package stack_implementation;
 
 public class DoubleStackMainClass {
+
     public static void main(String[] args) {
         MyOwnStack<Integer> combinedStack = new MyOwnStack<>(6);
         combinedStack.pushToStack1(23);
