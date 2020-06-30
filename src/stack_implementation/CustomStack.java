@@ -1,12 +1,16 @@
 package stack_implementation;
 
 
+import java.util.Iterator;
+
 public class CustomStack<E> {
     private final Object[] customArray;
     private final MyOwnStack<E> stack1;
     private final MyOwnStack<E> stack2;
     private int front;
     private int rear;
+    private int firstStackSize;
+    private int secondStackSize;
 
     CustomStack(Object[] customArray) {
         this.customArray = customArray;
@@ -26,7 +30,7 @@ public class CustomStack<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public void addToSecondStack() {
+    public void pushToSecondStack() {
         if (front > rear) {
             System.out.println("OverFlow No Element Can Be Inserted Now");
             System.exit(0);
@@ -34,16 +38,49 @@ public class CustomStack<E> {
             stack2.push((E) customArray[rear--]);
     }
 
+    public void popFromFirstStack() {
+        stack1.pop();
+    }
+
+    public void popFromSecondStack() {
+        stack2.pop();
+    }
+
     public void printStack() {
         System.out.print("Stack-1 Elements:");
-        for (E valueOfStack1 : stack1) {
-            System.out.print(valueOfStack1 + " ");
+        Iterator<E> iterator1 = stack1.iterator();
+        if (iterator1.hasNext()) {
+            firstStackSize = 0;
+            do {
+                System.out.print(iterator1.next() + " ");
+                firstStackSize++;
+            } while (iterator1.hasNext());
         }
         System.out.println();
         System.out.print("Stack-2 Element:");
-        for (E ValueOfStack2 : stack2) {
-            System.out.print(ValueOfStack2 + " ");
+        Iterator<E> iterator2 = stack2.iterator();
+        if (iterator2.hasNext()) {
+            secondStackSize = 0;
+            do {
+                System.out.print(iterator2.next() + " ");
+                secondStackSize++;
+            } while (iterator2.hasNext());
         }
     }
 
+    public int firstStackSize() {
+        return firstStackSize;
+    }
+
+    public int secondStackSize() {
+        return secondStackSize;
+    }
+
+    public E peekOfFirstStack() {
+        return stack1.peek();
+    }
+
+    public E peekOfSecondStack() {
+        return stack2.peek();
+    }
 }
