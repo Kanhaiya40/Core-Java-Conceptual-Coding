@@ -9,10 +9,10 @@ public class StudentsRecordMain {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String filepath = "/home/shubh/IdeaProjects/Java_Conceptual_code/resources/student_record";
+        String filePath = "/home/shubh/IdeaProjects/Java_Conceptual_code/resources/student_record";
         System.out.println("Enter No Of Data u want fetch:");
         int noOfRecords = scanner.nextInt();
-        StudentRanks studentRanks = new StudentRanks(filepath);
+        StudentRanks studentRanks = new StudentRanks(filePath);
         Set<String> allSubject = studentRanks.getSubjects();
         for (String eachSubject : allSubject) {
             System.out.println("Top " + noOfRecords + " Student Of " + eachSubject);
