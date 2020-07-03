@@ -5,10 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class StudentRecord {
-    Set<String> setOfSubject = new HashSet<>();
+public class StudentRecordParser {
 
-    public List<Student> getStudentRecordParser(String filePath) throws IOException {
+    final Set<String> subjects = new HashSet<>();
+
+    public List<Student> parse(String filePath) throws IOException {
         List<Student> listOfStudentRecord = new ArrayList<>();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
         String eachLine = bufferedReader.readLine();
@@ -19,7 +20,7 @@ public class StudentRecord {
             for (int j = 3; j < splitEachLine.length; j++) {
                 String[] splitSubjectWithMarks = splitEachLine[j].split("=");
                 subjectWithMarks.put(splitSubjectWithMarks[0], Double.parseDouble(splitSubjectWithMarks[1]));
-                setOfSubject.add(splitSubjectWithMarks[0]);
+                subjects.add(splitSubjectWithMarks[0]);
             }
             student = new Student(Integer.parseInt(splitEachLine[0]), splitEachLine[1], splitEachLine[2], subjectWithMarks);
             listOfStudentRecord.add(student);

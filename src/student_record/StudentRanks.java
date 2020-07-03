@@ -4,52 +4,37 @@ import java.io.IOException;
 import java.util.*;
 
 public class StudentRanks {
-    List<Student> studentRecord;
-    Set<String> subjects;
-    StudentRecord studentRecordClass = new StudentRecord();
+
+    final Set<String> subjects;
+    private final List<Student> studentRecord;
 
     StudentRanks(String filePath) throws IOException {
-        studentRecord = studentRecordClass.getStudentRecordParser(filePath);
-        subjects = studentRecordClass.setOfSubject;
+        StudentRecordParser studentRecordClass = new StudentRecordParser();
+        studentRecord = studentRecordClass.parse(filePath);
+        subjects = studentRecordClass.subjects;
     }
 
+    public List<Student> getListOfSortedStudents(String instantSubject) {
+        List<Student> sortedListOfStudent = new ArrayList<>();
+        List<Map.Entry<Student, Double>> list = new ArrayList<>(getListOfStudentWithParticularSubjectMarks(instantSubject).entrySet());
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        for (Map.Entry<Student, Double> entry : list) {
+            sortedListOfStudent.add(entry.getKey());
+        }
+        return sortedListOfStudent;
+    }
 
-    public List<Student> getStudentWithMarks(String instantSubject) {
-        List<Student> listOfStudentWithParticularSubject = new ArrayList<>();
+    private Map<Student, Double> getListOfStudentWithParticularSubjectMarks(String instantSubject) {
+        double subjectMarks;
+        Map<Student, Double> studentWithTheirMarks = new HashMap<>();
         for (Student student : studentRecord) {
-            double subjectMarks;
             Map<String, Double> subjectWithMarks = student.getSubjectWithMarks();
             if (subjectWithMarks.containsKey(instantSubject)) {
                 subjectMarks = subjectWithMarks.get(instantSubject);
-                student.setSubjectMarks(subjectMarks);
-                student.setSubject(instantSubject);
-            } else {
-                continue;
+                studentWithTheirMarks.put(student, subjectMarks);
             }
-            listOfStudentWithParticularSubject.add(student);
         }
-        return listOfStudentWithParticularSubject;
-    }
-
-    public TreeSet<Student> sortedStudentRecord(String instantSubject) {
-        List<Student> getListOfStudent = getStudentWithMarks(instantSubject);
-        TreeSet<Student> listOfStudent = new TreeSet<>(new ComparatorClass());
-        listOfStudent.addAll(getListOfStudent);
-        return listOfStudent;
+        return studentWithTheirMarks;
     }
 }
 
-class ComparatorClass implements Comparator<Student> {
-
-    @Override
-    public int compare(Student student, Student student2) {
-        double value1 = student.getSubjectMarks();
-        double value2 = student2.getSubjectMarks();
-        if (value1 < value2) {
-            return 1;
-        } else if (value1 > value2) {
-            return -1;
-        }
-        return 0;
-    }
-}

@@ -8,7 +8,6 @@ public class CircularList<E> implements Iterable<E> {
     private final Object[] customArray;
     private int rear;
 
-
     CircularList(int size) {
         customArray = new Object[size];
         this.rear = -1;

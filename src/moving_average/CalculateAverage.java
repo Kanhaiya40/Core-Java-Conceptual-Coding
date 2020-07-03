@@ -7,9 +7,8 @@ public class CalculateAverage {
     public void calculateMovingAverage(CircularList<Double> series) {
         System.out.println(series);
         double summationOfSeries = 0;
-        Iterator<Double> iterator = series.iterator();
-        while (iterator.hasNext()) {
-            summationOfSeries = summationOfSeries + iterator.next();
+        for (Double aDouble : series) {
+            summationOfSeries = summationOfSeries + aDouble;
         }
         System.out.println("Moving Average=" + Math.round(summationOfSeries / series.size()));
     }
