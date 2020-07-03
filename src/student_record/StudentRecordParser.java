@@ -7,25 +7,33 @@ import java.util.*;
 
 public class StudentRecordParser {
 
-    final Set<String> subjects = new HashSet<>();
+    private static final Set<String> subjects = new HashSet<>();
+    private static final List<Student> studentRecords = new ArrayList<>();
 
-    public List<Student> parse(String filePath) throws IOException {
-        List<Student> listOfStudentRecord = new ArrayList<>();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
-        String eachLine = bufferedReader.readLine();
-        Student student;
-        while (eachLine != null) {
-            Map<String, Double> subjectWithMarks = new HashMap<>();
-            String[] splitEachLine = eachLine.split(",");
-            for (int j = 3; j < splitEachLine.length; j++) {
-                String[] splitSubjectWithMarks = splitEachLine[j].split("=");
-                subjectWithMarks.put(splitSubjectWithMarks[0], Double.parseDouble(splitSubjectWithMarks[1]));
-                subjects.add(splitSubjectWithMarks[0]);
+    public Set<String> getSubjects() {
+        return subjects;
+    }
+
+    public List<Student> getStudentRecords() {
+        return studentRecords;
+    }
+
+    public void parse(String filePath) throws IOException {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String eachLine = bufferedReader.readLine();
+            Student student;
+            while (eachLine != null) {
+                Map<String, Double> subjectWithMarks = new HashMap<>();
+                String[] splitEachLine = eachLine.split(",");
+                for (int j = 3; j < splitEachLine.length; j++) {
+                    String[] splitSubjectWithMarks = splitEachLine[j].split("=");
+                    subjectWithMarks.put(splitSubjectWithMarks[0], Double.parseDouble(splitSubjectWithMarks[1]));
+                    subjects.add(splitSubjectWithMarks[0]);
+                }
+                student = new Student(Integer.parseInt(splitEachLine[0]), splitEachLine[1], splitEachLine[2], subjectWithMarks);
+                studentRecords.add(student);
+                eachLine = bufferedReader.readLine();
             }
-            student = new Student(Integer.parseInt(splitEachLine[0]), splitEachLine[1], splitEachLine[2], subjectWithMarks);
-            listOfStudentRecord.add(student);
-            eachLine = bufferedReader.readLine();
         }
-        return listOfStudentRecord;
     }
 }

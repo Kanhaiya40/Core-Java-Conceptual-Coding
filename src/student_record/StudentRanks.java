@@ -5,36 +5,41 @@ import java.util.*;
 
 public class StudentRanks {
 
-    final Set<String> subjects;
+    private final Set<String> subjects;
     private final List<Student> studentRecord;
 
     StudentRanks(String filePath) throws IOException {
-        StudentRecordParser studentRecordClass = new StudentRecordParser();
-        studentRecord = studentRecordClass.parse(filePath);
-        subjects = studentRecordClass.subjects;
+        StudentRecordParser studentsRecord = new StudentRecordParser();
+        studentsRecord.parse(filePath);
+        studentRecord = studentsRecord.getStudentRecords();
+        subjects = studentsRecord.getSubjects();
     }
 
-    public List<Student> getListOfSortedStudents(String instantSubject) {
-        List<Student> sortedListOfStudent = new ArrayList<>();
-        List<Map.Entry<Student, Double>> list = new ArrayList<>(getListOfStudentWithParticularSubjectMarks(instantSubject).entrySet());
+    public Set<String> getSubjects() {
+        return subjects;
+    }
+
+    public List<Student> sortedStudentsRecord(String currentSubject) {
+        List<Student> sortedStudentsRecord = new ArrayList<>();
+        List<Map.Entry<Student, Double>> list = new ArrayList<>(studentsWithCurrentSubject(currentSubject).entrySet());
         list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         for (Map.Entry<Student, Double> entry : list) {
-            sortedListOfStudent.add(entry.getKey());
+            sortedStudentsRecord.add(entry.getKey());
         }
-        return sortedListOfStudent;
+        return sortedStudentsRecord;
     }
 
-    private Map<Student, Double> getListOfStudentWithParticularSubjectMarks(String instantSubject) {
-        double subjectMarks;
-        Map<Student, Double> studentWithTheirMarks = new HashMap<>();
+    private Map<Student, Double> studentsWithCurrentSubject(String currentSubject) {
+        double currentSubjectMarks;
+        Map<Student, Double> studentsRecord = new HashMap<>();
         for (Student student : studentRecord) {
             Map<String, Double> subjectWithMarks = student.getSubjectWithMarks();
-            if (subjectWithMarks.containsKey(instantSubject)) {
-                subjectMarks = subjectWithMarks.get(instantSubject);
-                studentWithTheirMarks.put(student, subjectMarks);
+            if (subjectWithMarks.containsKey(currentSubject)) {
+                currentSubjectMarks = subjectWithMarks.get(currentSubject);
+                studentsRecord.put(student, currentSubjectMarks);
             }
         }
-        return studentWithTheirMarks;
+        return studentsRecord;
     }
 }
 

@@ -6,13 +6,13 @@ public class Student {
 
     private final int id;
     private final String name;
-    private final String studentClass;
+    private final String standard;
     private final Map<String, Double> subjectWithMarks;
 
     public Student(int studentId, String studentName, String studentClass, Map<String, Double> subjectWithMarks) {
         this.id = studentId;
         this.name = studentName;
-        this.studentClass = studentClass;
+        this.standard = studentClass;
         this.subjectWithMarks = subjectWithMarks;
     }
 
@@ -27,6 +27,6 @@ public class Student {
 
     @Override
     public String toString() {
-        return "" + id + ":" + subjectWithMarks + ":" + studentClass + ":" + name;
+        return "" + id + ":" + subjectWithMarks + ":" + standard + ":" + name;
     }
 }
