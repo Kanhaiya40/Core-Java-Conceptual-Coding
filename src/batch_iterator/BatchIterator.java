@@ -1,59 +1,38 @@
 package batch_iterator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class BatchIterator<E> implements Iterable<List<E>> {
+public class BatchIterator<E> implements Iterator<List<E>> {
 
-    private final E[] elements;
+    private final Iterator<E> iterator;
     private final int batchSize;
-    private int index = 0;
+    private final List<E> iteratedElements = new ArrayList<>();
 
-    @SuppressWarnings("unchecked")
-    BatchIterator(int size, int batchSize) {
+    BatchIterator(Iterable<E> iterable, int batchSize) {
         this.batchSize = batchSize;
-        elements = (E[]) new Object[size];
+        this.iterator =iterable.iterator();
     }
 
     @Override
     public String toString() {
-        return "" + Arrays.toString(elements);
-    }
-
-    public void add(E item) {
-        if (isFull()) {
-            throw new ArrayIndexOutOfBoundsException("This is an Array be CareFull");
-        } else {
-            elements[index++] = item;
-        }
+        return "" + iteratedElements;
     }
 
     @Override
-    public Iterator<List<E>> iterator() {
-        return new Iterator<List<E>>() {
-            final List<E> iteratedElements = new ArrayList<>(batchSize);
-            int temporaryIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return temporaryIndex < elements.length;
-            }
-
-            @Override
-            public List<E> next() {
-                iteratedElements.clear();
-                if (hasNext())
-                    for (int i = 0; i < batchSize && temporaryIndex < elements.length; i++) {
-                        iteratedElements.add(elements[temporaryIndex++]);
-                    }
-                return iteratedElements;
-            }
-        };
+    public boolean hasNext() {
+        return iterator.hasNext();
     }
 
-    private boolean isFull() {
-        return index == elements.length;
+    @Override
+    public List<E> next() {
+        iteratedElements.clear();
+        int index=0;
+        while (iterator.hasNext() && index<batchSize){
+            iteratedElements.add(iterator.next());
+            index++;
+        }
+        return iteratedElements;
     }
 }
