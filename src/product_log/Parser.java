@@ -8,9 +8,10 @@ import java.util.List;
 
 public class Parser {
 
-    public List<Product> parse() throws IOException {
-        List<Product> products = new ArrayList<>();
-        FileReader fileReader = new FileReader("/home/kanhaiya/Desktop/sample1.txt");
+    private final List<Product> products = new ArrayList<>();
+
+    public void parse(String filePath) throws IOException {
+        FileReader fileReader = new FileReader(filePath);
         try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String eachLine = bufferedReader.readLine();
             while (eachLine != null) {
@@ -22,6 +23,10 @@ public class Parser {
                 eachLine = bufferedReader.readLine();
             }
         }
+    }
+
+    public List<Product> getProducts() {
         return products;
     }
+
 }

@@ -3,8 +3,10 @@ package product_log;
 import java.io.IOException;
 
 public class ProductLogMain {
+
     public static void main(String[] args) throws IOException {
-        Parser parser = new Parser();
-        System.out.println(parser.parse());
+        String filePath = "/home/kanhaiya/Desktop/sample1.txt";
+        ItemIdVsBuyCount itemIdVsBuyCount = new ItemIdVsBuyCount(filePath);
+        System.out.println(itemIdVsBuyCount.getData());
     }
 }
