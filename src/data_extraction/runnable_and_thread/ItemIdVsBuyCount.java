@@ -1,25 +1,29 @@
-package sequential_approach;
+package data_extraction.runnable_and_thread;
+
+import data_extraction.Parser;
+import data_extraction.PurchaseEvent;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
-public class ItemIdVsBuyCount {
+public class ItemIdVsBuyCount implements Runnable {
 
     private final List<PurchaseEvent> purchaseEvents;
-    private Set<Integer> uniqueItemId;
+    private final Set<Integer> uniqueItemId;
 
     ItemIdVsBuyCount(String filePath) throws IOException {
         Parser parser = new Parser();
         parser.parse(filePath);
-        uniqueItemId = parser.getUniqueItemId();
         purchaseEvents = parser.getPurchaseEvents();
+        uniqueItemId = parser.getUniqueItemId();
     }
 
-    public Map<Integer, Integer> getData() {
-        Map<Integer, Integer> itemIdVsBuyCountData = new HashMap<>();
+    @Override
+    public void run() {
+        Map<Integer, Integer> itemIdVsBuyCountData = new TreeMap<>();
         for (Integer itemId : uniqueItemId) {
             int buyCount = 0;
             for (PurchaseEvent purchaseEvent : purchaseEvents) {
@@ -29,6 +33,6 @@ public class ItemIdVsBuyCount {
             }
             itemIdVsBuyCountData.put(itemId, buyCount);
         }
-        return itemIdVsBuyCountData;
+        System.out.println(itemIdVsBuyCountData);
     }
 }

@@ -1,4 +1,4 @@
-package sequential_approach;
+package data_extraction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

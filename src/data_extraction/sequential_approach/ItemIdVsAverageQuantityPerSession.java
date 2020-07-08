@@ -1,4 +1,7 @@
-package sequential_approach;
+package data_extraction.sequential_approach;
+
+import data_extraction.Parser;
+import data_extraction.PurchaseEvent;
 
 import java.io.IOException;
 import java.util.HashMap;
