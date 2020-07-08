@@ -1,6 +1,6 @@
-package product_log;
+package sequential_approach;
 
-public class Product {
+public class PurchaseEvent {
 
     private int sessionId;
     private String currentTimePeriod;
@@ -8,7 +8,7 @@ public class Product {
     private int price;
     private int quantity;
 
-    public Product(int sessionId, String currentTimePeriod, int itemId, int price, int quantity) {
+    public PurchaseEvent(int sessionId, String currentTimePeriod, int itemId, int price, int quantity) {
         this.sessionId = sessionId;
         this.currentTimePeriod = currentTimePeriod;
         this.itemId = itemId;
@@ -20,13 +20,17 @@ public class Product {
         return itemId;
     }
 
+    public int getSessionId() {
+        return sessionId;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "PurchaseEvent{" +
                 "sessionId=" + sessionId +
                 ", currentTimePeriod=" + currentTimePeriod +
                 ", itemId=" + itemId +
