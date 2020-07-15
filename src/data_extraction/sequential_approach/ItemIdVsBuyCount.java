@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class ItemIdVsBuyCount {
 
-    private final List<PurchaseEvent> purchaseEvents;
-    private Set<Integer> uniqueItemId;
+    private final Set<Integer> uniqueItemId;
+    private List<PurchaseEvent> purchaseEvents;
 
     ItemIdVsBuyCount(String filePath) throws IOException {
         Parser parser = new Parser();
@@ -22,16 +22,12 @@ public class ItemIdVsBuyCount {
     }
 
     public Map<Integer, Integer> getData() {
-        Map<Integer, Integer> itemIdVsBuyCountData = new HashMap<>();
-        for (Integer itemId : uniqueItemId) {
-            int buyCount = 0;
-            for (PurchaseEvent purchaseEvent : purchaseEvents) {
-                if (purchaseEvent.getItemId() == itemId) {
-                    buyCount = buyCount + purchaseEvent.getQuantity();
-                }
-            }
-            itemIdVsBuyCountData.put(itemId, buyCount);
-        }
-        return itemIdVsBuyCountData;
+        Map<Integer, Integer> itemIDVsBuysCount = new HashMap<>();
+        int[] buysCount = new int[1];
+        uniqueItemId.forEach(itemId -> {
+            buysCount[0] = (int) purchaseEvents.stream().filter(purchaseEvent -> purchaseEvent.getItemId() == itemId).count();
+            itemIDVsBuysCount.put(itemId, buysCount[0]);
+        });
+        return itemIDVsBuysCount;
     }
 }

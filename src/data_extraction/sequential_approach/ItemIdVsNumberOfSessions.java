@@ -21,17 +21,14 @@ public class ItemIdVsNumberOfSessions {
         uniqueItemId = parser.getUniqueItemId();
     }
 
+
     public Map<Integer, Integer> getData() {
         Map<Integer, Integer> itemIdVsNumberOfSession = new HashMap<>();
-        for (Integer uniqueId : uniqueItemId) {
-            int noOfSessions = 0;
-            for (PurchaseEvent purchaseEvent : purchaseEvents) {
-                if (purchaseEvent.getItemId() == uniqueId) {
-                    noOfSessions++;
-                }
-            }
-            itemIdVsNumberOfSession.put(uniqueId, noOfSessions);
-        }
+        final int[] noOfSessions = new int[1];
+        uniqueItemId.forEach(itemId -> {
+            noOfSessions[0] = (int) purchaseEvents.stream().filter(purchaseEvent -> purchaseEvent.getItemId() == itemId).count();
+            itemIdVsNumberOfSession.put(itemId, noOfSessions[0]);
+        });
         return itemIdVsNumberOfSession;
     }
 }
