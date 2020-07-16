@@ -14,6 +14,6 @@ public class SequentialLogMain {
         System.out.println(itemIdVsNumberOfSessions.getData() + "\n");
         ItemIdVsAverageQuantityPerSession itemIdVsAverageQuantityPerSession = new ItemIdVsAverageQuantityPerSession(filePath);
         System.out.println("ItemId vs AverageQuantityPerSession:");
-        System.out.println(itemIdVsAverageQuantityPerSession.getData());
+        System.out.println(itemIdVsAverageQuantityPerSession.getAverageQuantityPerSession());
     }
 }
