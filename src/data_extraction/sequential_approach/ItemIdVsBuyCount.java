@@ -4,34 +4,20 @@ import data_extraction.Parser;
 import data_extraction.PurchaseEvent;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ItemIdVsBuyCount {
 
     private final List<PurchaseEvent> purchaseEvents;
-    private Set<Integer> uniqueItemId;
 
     ItemIdVsBuyCount(String filePath) throws IOException {
-        Parser parser = new Parser();
-        parser.parse(filePath);
-        uniqueItemId = parser.getUniqueItemId();
+        Parser parser = new Parser(filePath);
         purchaseEvents = parser.getPurchaseEvents();
     }
 
-    public Map<Integer, Integer> getData() {
-        Map<Integer, Integer> itemIdVsBuyCountData = new HashMap<>();
-        for (Integer itemId : uniqueItemId) {
-            int buyCount = 0;
-            for (PurchaseEvent purchaseEvent : purchaseEvents) {
-                if (purchaseEvent.getItemId() == itemId) {
-                    buyCount = buyCount + purchaseEvent.getQuantity();
-                }
-            }
-            itemIdVsBuyCountData.put(itemId, buyCount);
-        }
-        return itemIdVsBuyCountData;
+    public Map<Integer, Long> getData() {
+        return purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.counting()));
     }
 }

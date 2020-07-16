@@ -10,15 +10,16 @@ import java.util.Set;
 
 public class Parser {
 
+    private final String filePath;
     private final List<PurchaseEvent> purchaseEvents = new ArrayList<>();
     private final Set<Integer> uniqueItemId = new HashSet<>();
-    private final Set<Integer> uniqueSession = new HashSet<>();
 
-    public Set<Integer> getUniqueSession() {
-        return uniqueSession;
+    public Parser(String filePath) throws IOException {
+        this.filePath = filePath;
+        parse();
     }
 
-    public void parse(String filePath) throws IOException {
+    public void parse() throws IOException {
         FileReader fileReader = new FileReader(filePath);
         try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String eachLine = bufferedReader.readLine();
@@ -28,7 +29,6 @@ public class Parser {
                         Integer.parseInt(eachLineSeparator[2]), Integer.parseInt(eachLineSeparator[3]),
                         Integer.parseInt(eachLineSeparator[4]));
                 uniqueItemId.add(Integer.parseInt(eachLineSeparator[2]));
-                uniqueSession.add(Integer.parseInt(eachLineSeparator[0]));
                 purchaseEvents.add(purchaseEvent);
                 eachLine = bufferedReader.readLine();
             }
