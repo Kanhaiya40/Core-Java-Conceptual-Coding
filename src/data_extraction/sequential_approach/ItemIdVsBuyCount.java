@@ -16,6 +16,7 @@ public class ItemIdVsBuyCount {
         Parser parser = new Parser(filePath);
         purchaseEvents = parser.getPurchaseEvents();
     }
+
     public Map<Integer, Long> getData() {
         return purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.counting()));
     }

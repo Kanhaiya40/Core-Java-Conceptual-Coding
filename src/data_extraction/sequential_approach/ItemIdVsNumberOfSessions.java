@@ -16,6 +16,7 @@ public class ItemIdVsNumberOfSessions {
         Parser parser = new Parser(filePath);
         purchaseEvents = parser.getPurchaseEvents();
     }
+
     public Map<Integer, Long> getData() {
         Map<Integer, Long> itemIdVsNumberOfSession;
         itemIdVsNumberOfSession = purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.counting()));
