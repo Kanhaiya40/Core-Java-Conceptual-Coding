@@ -17,7 +17,7 @@ public class ItemIdVsAverageQuantityPerSession {
         purchaseEvents = parser.getPurchaseEvents();
     }
 
-    public Map<Integer, Double> getData() {
+    public Map<Integer, Double> getAverageQuantityPerSession() {
         return purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.averagingDouble(PurchaseEvent::getQuantity)));
     }
 }
