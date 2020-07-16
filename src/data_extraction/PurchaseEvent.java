@@ -2,11 +2,11 @@ package data_extraction;
 
 public class PurchaseEvent {
 
-    private int sessionId;
-    private String currentTimePeriod;
-    private int itemId;
-    private int price;
-    private int quantity;
+    private final int sessionId;
+    private final String currentTimePeriod;
+    private final int itemId;
+    private final int price;
+    private final int quantity;
 
     public PurchaseEvent(int sessionId, String currentTimePeriod, int itemId, int price, int quantity) {
         this.sessionId = sessionId;
