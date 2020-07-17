@@ -9,7 +9,7 @@ import java.util.List;
 public class SequentialLogMain {
 
     public static void main(String[] args) throws IOException {
-        String filePath = "/home/shubh/Desktop/sample1.txt";
+        String filePath = "/home/shubh/Desktop/sample.txt";
         Parser parser = new Parser(filePath);
         List<PurchaseEvent> purchaseEvents = parser.getPurchaseEvents();
         SequentialLog<Long> itemIdVsBuyCount = new ItemIdVsBuyCount();

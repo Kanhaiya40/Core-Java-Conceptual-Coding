@@ -13,8 +13,7 @@ public class ItemIdVsNumberOfSessions implements SequentialLog<Long> {
         Map<Integer, Long> itemIdVsNumberOfSession;
         itemIdVsNumberOfSession = purchaseEvents
                 .stream()
-                .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
-                        Collectors.counting()));
+                .collect(Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.counting()));
         return itemIdVsNumberOfSession;
     }
 }
