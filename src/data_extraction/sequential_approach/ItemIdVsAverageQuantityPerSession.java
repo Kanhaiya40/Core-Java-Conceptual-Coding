@@ -1,23 +1,18 @@
 package data_extraction.sequential_approach;
 
-import data_extraction.Parser;
 import data_extraction.PurchaseEvent;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ItemIdVsAverageQuantityPerSession {
+public class ItemIdVsAverageQuantityPerSession implements SequentialLog<Double>{
 
-    private final List<PurchaseEvent> purchaseEvents;
-
-    ItemIdVsAverageQuantityPerSession(String filePath) throws IOException {
-        Parser parser = new Parser(filePath);
-        purchaseEvents = parser.getPurchaseEvents();
-    }
-
-    public Map<Integer, Double> getAverageQuantityPerSession() {
-        return purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.averagingDouble(PurchaseEvent::getQuantity)));
+    @Override
+    public Map<Integer, Double> getData(List<PurchaseEvent> purchaseEvents) {
+        return purchaseEvents
+                .stream()
+                .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
+                        Collectors.averagingDouble(PurchaseEvent::getQuantity)));
     }
 }
