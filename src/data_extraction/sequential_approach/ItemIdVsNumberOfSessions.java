@@ -2,18 +2,23 @@ package data_extraction.sequential_approach;
 
 import data_extraction.PurchaseEvent;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ItemIdVsNumberOfSessions implements SequentialLog<Long> {
+public class ItemIdVsNumberOfSessions implements Report {
+
+    Map<Integer, Long> itemIdVsNumberOfSession = new HashMap<>();
 
     @Override
-    public Map<Integer, Long> getData(List<PurchaseEvent> purchaseEvents) {
-        Map<Integer, Long> itemIdVsNumberOfSession;
+    public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
         itemIdVsNumberOfSession = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.counting()));
-        return itemIdVsNumberOfSession;
+        outputStream.write(itemIdVsNumberOfSession.toString().getBytes());
+        outputStream.write('\n');
     }
 }

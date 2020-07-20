@@ -10,14 +10,15 @@ import java.util.Set;
 
 public class Parser {
 
-    private final String filePath;
     private final List<PurchaseEvent> purchaseEvents = new ArrayList<>();
     private final Set<Integer> uniqueItemId = new HashSet<>();
+    private String filePath;
 
     public Parser(String filePath) throws IOException {
         this.filePath = filePath;
         parse();
     }
+
 
     public void parse() throws IOException {
         FileReader fileReader = new FileReader(filePath);
