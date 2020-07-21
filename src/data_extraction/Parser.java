@@ -12,7 +12,7 @@ public class Parser {
 
     private final List<PurchaseEvent> purchaseEvents = new ArrayList<>();
     private final Set<Integer> uniqueItemId = new HashSet<>();
-    private String filePath;
+    private final String filePath;
 
     public Parser(String filePath) throws IOException {
         this.filePath = filePath;
