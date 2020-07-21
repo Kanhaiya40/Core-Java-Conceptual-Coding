@@ -7,5 +7,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 public interface Report {
+
     void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException;
 }

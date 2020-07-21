@@ -17,7 +17,7 @@ public class ItemIdVsBuyCount implements Report {
                 .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
                         Collectors.counting()));
         outputStream.write(itemIdVsBuysCount.toString().getBytes());
-        outputStream.write('\n');
+        outputStream.write('\n' );
     }
 }
 

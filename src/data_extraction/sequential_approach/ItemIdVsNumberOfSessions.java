@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 
 public class ItemIdVsNumberOfSessions implements Report {
 
-    Map<Integer, Map<Integer, Long>> itemIdVsNumberOfSession = new HashMap<>();
-
     @Override
     public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
-        itemIdVsNumberOfSession = purchaseEvents
+        Map<Integer, Map<Integer, Long>> itemIdVsNumberOfSession = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
                         Collectors.groupingBy(PurchaseEvent::getSessionId,
