@@ -1,38 +1,27 @@
 package data_extraction.runnable_and_thread;
 
-import data_extraction.Parser;
 import data_extraction.PurchaseEvent;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.stream.Collectors;
 
-public class ItemIdVsBuyCount implements Runnable {
+public class ItemIdVsBuyCount implements Report, Runnable {
 
-    private final List<PurchaseEvent> purchaseEvents;
-    private final Set<Integer> uniqueItemId;
-
-    ItemIdVsBuyCount(String filePath) throws IOException {
-        Parser parser = new Parser();
-        parser.parse(filePath);
-        purchaseEvents = parser.getPurchaseEvents();
-        uniqueItemId = parser.getUniqueItemId();
-    }
 
     @Override
     public void run() {
-        Map<Integer, Integer> itemIdVsBuyCountData = new TreeMap<>();
-        for (Integer itemId : uniqueItemId) {
-            int buyCount = 0;
-            for (PurchaseEvent purchaseEvent : purchaseEvents) {
-                if (purchaseEvent.getItemId() == itemId) {
-                    buyCount = buyCount + purchaseEvent.getQuantity();
-                }
-            }
-            itemIdVsBuyCountData.put(itemId, buyCount);
-        }
-        System.out.println(itemIdVsBuyCountData);
+
+    }
+
+    @Override
+    public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
+        Map<Integer, Long> itemIdVsBuysCount = purchaseEvents
+                .stream()
+                .collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.counting()));
+        outputStream.write(itemIdVsBuysCount.toString().getBytes());
+        outputStream.write('\n');
     }
 }
