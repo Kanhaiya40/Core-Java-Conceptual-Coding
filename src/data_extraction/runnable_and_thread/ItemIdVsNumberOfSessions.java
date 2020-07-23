@@ -18,7 +18,8 @@ public class ItemIdVsNumberOfSessions implements Report, Runnable {
     public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
         Map<Integer, Map<Integer, Long>> itemIdVsNumberOfSession = purchaseEvents
                 .stream()
-                .collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.counting())));
+                .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
+                        Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.counting())));
         outputStream.write(itemIdVsNumberOfSession.toString().getBytes());
         outputStream.write('\n');
     }

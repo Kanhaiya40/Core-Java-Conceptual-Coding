@@ -19,7 +19,8 @@ public class PurchaseEventsSequentialApproach {
         reports.add(new ItemIdVsNumberOfSessions());
         reports.add(new ItemIdVsAverageQuantityPerSession());
         for (Report report : reports) {
-            report.generate(purchaseEvents, new FileOutputStream("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/reports.txt", true));
+            report.generate(purchaseEvents,
+                    new FileOutputStream("/home/shubh/IdeaProjects/Java_Conceptual_code/resources/reports.txt", true));
         }
     }
 }

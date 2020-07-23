@@ -13,11 +13,18 @@ public class ItemIdVsAverageQuantityPerSession implements Report {
 
     @Override
     public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
-        Map<Integer, Double> item = new HashMap<>();
-        Map<Integer, Map<Integer, Double>> itemIdVsAverageQuantityPerSession;
-        itemIdVsAverageQuantityPerSession = purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.averagingDouble(PurchaseEvent::getQuantity))));
-        purchaseEvents.stream().filter(purchaseEvent -> itemIdVsAverageQuantityPerSession.containsKey(purchaseEvent.getItemId())).forEach(purchaseEvent -> item.put(purchaseEvent.getItemId(), itemIdVsAverageQuantityPerSession.get(purchaseEvent.getItemId()).get(purchaseEvent.getSessionId())));
-        outputStream.write(item.toString().getBytes());
+        Map<Integer, Double> itemIdVsAvgQuantPerSession = new HashMap<>();
+        Map<Integer, Map<Integer, Double>> itemIdVsSesionIdAvg;
+        itemIdVsSesionIdAvg = purchaseEvents
+                .stream()
+                .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
+                        Collectors.groupingBy(PurchaseEvent::getSessionId,
+                                Collectors.averagingDouble(PurchaseEvent::getQuantity))));
+        purchaseEvents.stream().
+                filter(purchaseEvent -> itemIdVsSesionIdAvg.containsKey(purchaseEvent.getItemId())).
+                forEach(purchaseEvent -> itemIdVsAvgQuantPerSession.put(purchaseEvent.getItemId(),
+                        itemIdVsSesionIdAvg.get(purchaseEvent.getItemId()).get(purchaseEvent.getSessionId())));
+        outputStream.write(itemIdVsAvgQuantPerSession.toString().getBytes());
         outputStream.write('\n');
     }
 }
