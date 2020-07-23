@@ -13,12 +13,14 @@ public class ItemIdVsNumberOfSessions implements Report {
 
     @Override
     public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
-        Map<Integer, Map<Integer, Long>> itemIdVsNumberOfSession = purchaseEvents
-                .stream()
-                .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
-                        Collectors.groupingBy(PurchaseEvent::getSessionId,
-                                Collectors.counting())));
-        outputStream.write(itemIdVsNumberOfSession.toString().getBytes());
+
+        Map<Integer, Map<Integer, Long>> itemIdVsNumberOfSessionId;
+        Map<Integer, Integer> item = new HashMap<>();
+        itemIdVsNumberOfSessionId = purchaseEvents.stream().collect(Collectors.groupingBy(PurchaseEvent::getItemId, Collectors.groupingBy(PurchaseEvent::getSessionId, Collectors.counting())));
+        for (Integer eachItemId : itemIdVsNumberOfSessionId.keySet()) {
+            item.put(eachItemId, itemIdVsNumberOfSessionId.get(eachItemId).size());
+        }
+        outputStream.write(item.toString().getBytes());
         outputStream.write('\n');
     }
 }

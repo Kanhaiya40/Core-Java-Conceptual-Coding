@@ -16,7 +16,7 @@ public class PurchaseEvent {
         this.quantity = quantity;
     }
 
-    public int getItemId(){
+    public int getItemId() {
         return itemId;
     }
 

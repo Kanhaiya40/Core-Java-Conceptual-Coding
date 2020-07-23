@@ -16,7 +16,6 @@ public class Parser {
         parse();
     }
 
-
     public void parse() throws IOException {
         FileReader fileReader = new FileReader(filePath);
         try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
