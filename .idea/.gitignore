@@ -1,8 +1,5 @@
 # Default ignored files
-.idea
+.idea/
 workspace.xml
-.iml/
+".iml"
 out
-**/target/**
-*.log
-**/log/**
