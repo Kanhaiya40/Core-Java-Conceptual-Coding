@@ -2,8 +2,7 @@ package data_extraction.sequential_approach;
 
 import data_extraction.PurchaseEvent;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 public class ItemIdVsAverageQuantityPerSession implements Report {
 
     @Override
-    public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
+    public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         Map<Integer, Double> itemIdVsAvgQuantPerSession = new HashMap<>();
         Map<Integer, Map<Integer, Double>> itemIdVsSesionIdAvg;
         itemIdVsSesionIdAvg = purchaseEvents
@@ -24,7 +23,8 @@ public class ItemIdVsAverageQuantityPerSession implements Report {
                 filter(purchaseEvent -> itemIdVsSesionIdAvg.containsKey(purchaseEvent.getItemId())).
                 forEach(purchaseEvent -> itemIdVsAvgQuantPerSession.put(purchaseEvent.getItemId(),
                         itemIdVsSesionIdAvg.get(purchaseEvent.getItemId()).get(purchaseEvent.getSessionId())));
-        outputStream.write(itemIdVsAvgQuantPerSession.toString().getBytes());
-        outputStream.write('\n');
+        printWriter.println(itemIdVsAvgQuantPerSession);
+        printWriter.flush();
+
     }
 }

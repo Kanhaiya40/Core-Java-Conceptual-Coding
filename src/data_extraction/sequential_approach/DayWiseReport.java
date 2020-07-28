@@ -1,4 +1,6 @@
-package tabular_report;
+package data_extraction.sequential_approach;
+
+import data_extraction.PurchaseEvent;
 
 import java.io.PrintWriter;
 import java.time.DayOfWeek;
@@ -23,19 +25,22 @@ import java.util.stream.Collectors;
  * SUNDAY			214537888			2.5
  * SUNDAY			214535653			2.0
  */
-public class DayWiseReport implements TabularReport {
+public class DayWiseReport implements Report {
+
 
     @Override
-    public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
+    public void generate(List<data_extraction.PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         Map<DayOfWeek, Map<Integer, Double>> report = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getDayOfWeek,
                         Collectors.groupingBy(PurchaseEvent::getItemId,
                                 Collectors.averagingDouble(PurchaseEvent::getQuantity))));
-        printWriter.println("DayOfWeek\t\t" + "ItemId\t\t\t" + "AvgQuaPurchased");
+        printWriter.println("DayOfWeek\t" +
+                "" + "ItemId\t" + "AvgQuaPurchased ");
         for (DayOfWeek eachDayOfPurchase : report.keySet()) {
             for (Integer eachItemId : report.get(eachDayOfPurchase).keySet()) {
-                printWriter.println(eachDayOfPurchase + "\t\t\t" + eachItemId + "\t\t\t" + report.get(eachDayOfPurchase).get(eachItemId));
+                System.out.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + report.get(eachDayOfPurchase).get(eachItemId));
+                printWriter.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + report.get(eachDayOfPurchase).get(eachItemId));
                 printWriter.flush();
             }
         }

@@ -2,8 +2,7 @@ package data_extraction.sequential_approach;
 
 import data_extraction.PurchaseEvent;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,13 +10,13 @@ import java.util.stream.Collectors;
 public class ItemIdVsBuyCount implements Report {
 
     @Override
-    public void generate(List<PurchaseEvent> purchaseEvents, OutputStream outputStream) throws IOException {
+    public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         Map<Integer, Long> itemIdVsBuysCount = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
                         Collectors.counting()));
-        outputStream.write(itemIdVsBuysCount.toString().getBytes());
-        outputStream.write('\n' );
+        printWriter.println(itemIdVsBuysCount);
+        printWriter.flush();
     }
 }
 

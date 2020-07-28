@@ -1,10 +1,10 @@
-package tabular_report;
+package data_extraction.sequential_approach;
 
 import java.util.Objects;
 
 public class HourWiseReportData {
 
-    public int hourOfPurchaseEvents;
+    public String hourOfDay;
     public int avgNumOfActiveSessions;
     public int avgNumOfItemPurchased;
 
@@ -13,20 +13,20 @@ public class HourWiseReportData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HourWiseReportData that = (HourWiseReportData) o;
-        return hourOfPurchaseEvents == that.hourOfPurchaseEvents;
+        return hourOfDay.equals(that.hourOfDay);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hourOfPurchaseEvents);
+        return Objects.hash(hourOfDay);
     }
 
-    public int getHourOfPurchaseEvents() {
-        return hourOfPurchaseEvents;
+    public String getHourOfDay() {
+        return hourOfDay;
     }
 
-    public void setHourOfPurchaseEvents(int hourOfPurchaseEvents) {
-        this.hourOfPurchaseEvents = hourOfPurchaseEvents;
+    public void setHourOfDay(String hourOfDay) {
+        this.hourOfDay = hourOfDay;
     }
 
     public int getAvgNumOfActiveSession() {
@@ -40,7 +40,7 @@ public class HourWiseReportData {
     @Override
     public String toString() {
         return "HourWiseReportData{" +
-                "hourOfPurchaseEvents=" + hourOfPurchaseEvents +
+                "hourOfPurchaseEvents=" + hourOfDay +
                 ", avgNumOfActiveSession=" + avgNumOfActiveSessions +
                 ", avgNumOfItemPurchased=" + avgNumOfItemPurchased +
                 '}';
