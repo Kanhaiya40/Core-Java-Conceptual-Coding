@@ -39,7 +39,6 @@ public class DayWiseReport implements Report {
                 "" + "ItemId\t" + "AvgQuaPurchased ");
         for (DayOfWeek eachDayOfPurchase : report.keySet()) {
             for (Integer eachItemId : report.get(eachDayOfPurchase).keySet()) {
-                System.out.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + report.get(eachDayOfPurchase).get(eachItemId));
                 printWriter.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + report.get(eachDayOfPurchase).get(eachItemId));
                 printWriter.flush();
             }

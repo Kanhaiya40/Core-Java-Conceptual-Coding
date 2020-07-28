@@ -3,10 +3,10 @@ package data_extraction.sequential_approach;
 import data_extraction.PurchaseEvent;
 
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +30,7 @@ public class HourWiseReport implements Report {
     @Override
     public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         printWriter.write('\n');
-        Set<HourWiseReportData> hourWiseReportData = new CopyOnWriteArraySet<>();
+        Set<HourWiseReportData> hourWiseReportData = new HashSet<>();
         printWriter.println("HourOfDay\t" + "AvgNumOfActiveSession\t" + "AvgNumOfItemPurchased");
         Map<String, Set<Integer>> uniqueSessionId = purchaseEvents
                 .stream()

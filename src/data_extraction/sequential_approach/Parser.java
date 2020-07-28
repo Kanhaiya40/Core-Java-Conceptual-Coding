@@ -1,4 +1,6 @@
-package data_extraction;
+package data_extraction.sequential_approach;
+
+import data_extraction.PurchaseEvent;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

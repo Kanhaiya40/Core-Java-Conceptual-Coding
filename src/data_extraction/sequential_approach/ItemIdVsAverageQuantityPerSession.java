@@ -12,18 +12,18 @@ public class ItemIdVsAverageQuantityPerSession implements Report {
 
     @Override
     public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
-        Map<Integer, Double> itemIdVsAvgQuantPerSession = new HashMap<>();
-        Map<Integer, Map<Integer, Double>> itemIdVsSesionIdAvg;
-        itemIdVsSesionIdAvg = purchaseEvents
+        Map<Integer, Double> itemIdVsAvgQuantityPerSession = new HashMap<>();
+        Map<Integer, Map<Integer, Double>> itemIdVsSessionIdAvg;
+        itemIdVsSessionIdAvg = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getItemId,
                         Collectors.groupingBy(PurchaseEvent::getSessionId,
                                 Collectors.averagingDouble(PurchaseEvent::getQuantity))));
         purchaseEvents.stream().
-                filter(purchaseEvent -> itemIdVsSesionIdAvg.containsKey(purchaseEvent.getItemId())).
-                forEach(purchaseEvent -> itemIdVsAvgQuantPerSession.put(purchaseEvent.getItemId(),
-                        itemIdVsSesionIdAvg.get(purchaseEvent.getItemId()).get(purchaseEvent.getSessionId())));
-        printWriter.println(itemIdVsAvgQuantPerSession);
+                filter(purchaseEvent -> itemIdVsSessionIdAvg.containsKey(purchaseEvent.getItemId())).
+                forEach(purchaseEvent -> itemIdVsAvgQuantityPerSession.put(purchaseEvent.getItemId(),
+                        itemIdVsSessionIdAvg.get(purchaseEvent.getItemId()).get(purchaseEvent.getSessionId())));
+        printWriter.println(itemIdVsAvgQuantityPerSession);
         printWriter.flush();
 
     }

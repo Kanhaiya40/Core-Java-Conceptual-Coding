@@ -1,6 +1,6 @@
 package data_extraction.runnable_and_thread;
 
-import data_extraction.Parser;
+import data_extraction.sequential_approach.Parser;
 import data_extraction.PurchaseEvent;
 
 import java.io.IOException;

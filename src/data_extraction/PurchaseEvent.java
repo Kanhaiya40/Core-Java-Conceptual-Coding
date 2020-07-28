@@ -40,7 +40,7 @@ public class PurchaseEvent {
     }
 
     public String getHourOfPurchaseEvent() {
-        return getCurrentTimePeriod().getDayOfWeek() + "_" + getCurrentTimePeriod().getHour() + "-" + (getCurrentTimePeriod().getHour() + 1);
+        return getCurrentTimePeriod().getDayOfWeek() + "_" + getCurrentTimePeriod().getHour() + "-" + (getCurrentTimePeriod().getHour() + 1)+"  ";
     }
 
     @Override
