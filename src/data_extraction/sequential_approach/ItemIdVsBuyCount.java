@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class ItemIdVsBuyCount implements Report {
 
     @Override
-    public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
+    public void process(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         Map<Integer, Long> itemIdVsBuysCount = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getItemId,

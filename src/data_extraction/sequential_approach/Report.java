@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface Report {
 
-    void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) throws IOException;
+    void process(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) throws IOException;
 
 }

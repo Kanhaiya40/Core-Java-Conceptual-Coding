@@ -21,7 +21,7 @@ public class PurchaseEventsSequentialApproach {
         reports.add(new DayWiseReport());
         reports.add(new HourWiseReport());
         for (Report report : reports) {
-            report.generate(purchaseEvents, printWriter);
+            report.process(purchaseEvents, printWriter);
         }
     }
 }

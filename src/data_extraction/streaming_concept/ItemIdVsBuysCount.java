@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItemIdVsBuysCount implements StreamReport {
+
     private static final Map<Integer, Integer> itemIdVsBuysCount = new HashMap<>();
 
     @Override

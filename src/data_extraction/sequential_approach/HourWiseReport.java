@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class HourWiseReport implements Report {
 
     @Override
-    public void generate(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
+    public void process(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
         printWriter.write('\n');
         Set<HourWiseReportData> hourWiseReportData = new HashSet<>();
         printWriter.println("HourOfDay\t" + "AvgNumOfActiveSession\t" + "AvgNumOfItemPurchased");

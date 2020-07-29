@@ -8,7 +8,6 @@ public class HourWiseReportData {
     private double avgActiveSessionId;
     private double avgItemIdPurchased;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,6 +27,15 @@ public class HourWiseReportData {
 
     public void setHourOfDay(String hourOfDay) {
         this.hourOfDay = hourOfDay;
+    }
+
+    @Override
+    public String toString() {
+        return "HourWiseReportData{" +
+                "hourOfDay='" + hourOfDay + '\'' +
+                ", avgActiveSessionId=" + avgActiveSessionId +
+                ", avgItemIdPurchased=" + avgItemIdPurchased +
+                '}';
     }
 
     public double getAvgActiveSessionId() {

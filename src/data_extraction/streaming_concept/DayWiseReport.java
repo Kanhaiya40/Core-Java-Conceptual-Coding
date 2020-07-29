@@ -10,51 +10,31 @@ import java.util.Set;
 
 public class DayWiseReport implements StreamReport {
 
-
-    Set<DayWiseReportData> dayWiseReportData = new HashSet<>();
-    Map<Integer, Integer> itemIdWithQuantityPurchased = new HashMap<>();
-
-    int noOfOccurrence = 0;
+    private final Map<DayWiseReportData, Double> totalQuantities = new HashMap<>();
+    private final Map<DayWiseReportData, Double> dayWiseCount = new HashMap<>();
+    private final Set<DayWiseReportData> dayWiseReportData = new HashSet<>();
 
     @Override
     public void process(PurchaseEvent purchaseEvent) {
-        if (dayWiseReportData.isEmpty()) {
-            noOfOccurrence++;
-            DayWiseReportData newDayWiseReportData = new DayWiseReportData();
-            newDayWiseReportData.setDayOfWeek(purchaseEvent.getDayOfWeek());
-            newDayWiseReportData.setItemId(purchaseEvent.getItemId());
-            newDayWiseReportData.setAvgQuantityPurchased(purchaseEvent.getQuantity());
-            itemIdWithQuantityPurchased.put(purchaseEvent.getItemId(), purchaseEvent.getQuantity());
-            dayWiseReportData.add(newDayWiseReportData);
+        DayWiseReportData tempData = new DayWiseReportData();
+        tempData.setDayOfWeek(purchaseEvent.getDayOfWeek());
+        tempData.setItemId(purchaseEvent.getItemId());
+        if (totalQuantities.containsKey(tempData) && dayWiseCount.containsKey(tempData)) {
+            dayWiseCount.put(tempData, dayWiseCount.get(tempData) + 1);
+            totalQuantities.put(tempData, totalQuantities.get(tempData) + purchaseEvent.getQuantity());
+            tempData.setAvgQuantityPurchased(totalQuantities.get(tempData) / dayWiseCount.get(tempData));
+            dayWiseReportData.remove(tempData);
         } else {
-            DayWiseReportData tempData = new DayWiseReportData();
-            tempData.setDayOfWeek(purchaseEvent.getDayOfWeek());
-            tempData.setItemId(purchaseEvent.getItemId());
-            tempData.setAvgQuantityPurchased(purchaseEvent.getQuantity());
-            if (dayWiseReportData.contains(tempData)) {
-                noOfOccurrence++;
-                double avg = (double) (itemIdWithQuantityPurchased.get(purchaseEvent.getItemId()) + purchaseEvent.getQuantity()) / noOfOccurrence;
-                tempData.setAvgQuantityPurchased(avg);
-                dayWiseReportData.add(tempData);
-                itemIdWithQuantityPurchased.put(purchaseEvent.getItemId(),
-                        itemIdWithQuantityPurchased.get(purchaseEvent.getItemId())
-                                + purchaseEvent.getQuantity());
-            } else {
-                noOfOccurrence = 0;
-                itemIdWithQuantityPurchased.clear();
-                DayWiseReportData newDayWiseReportData = new DayWiseReportData();
-                newDayWiseReportData.setDayOfWeek(purchaseEvent.getDayOfWeek());
-                newDayWiseReportData.setItemId(purchaseEvent.getItemId());
-                newDayWiseReportData.setAvgQuantityPurchased(purchaseEvent.getQuantity());
-                itemIdWithQuantityPurchased.put(purchaseEvent.getItemId(), purchaseEvent.getQuantity());
-                dayWiseReportData.add(newDayWiseReportData);
-                noOfOccurrence++;
-            }
+            dayWiseCount.put(tempData, 1.0);
+            totalQuantities.put(tempData, (double) purchaseEvent.getQuantity());
+            tempData.setAvgQuantityPurchased((double) totalQuantities.get(tempData) / dayWiseCount.get(tempData));
         }
+        dayWiseReportData.add(tempData);
     }
 
     @Override
     public void printReport(PrintWriter printWriter) {
+        System.out.println(dayWiseReportData);
         printWriter.println("");
         printWriter.println("DayOfWeek\t" + "ItemId\t" + "AvgQuantityPurchased\t");
         for (DayWiseReportData dayWiseReport : dayWiseReportData) {

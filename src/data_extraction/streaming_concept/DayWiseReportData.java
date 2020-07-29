@@ -31,6 +31,15 @@ public class DayWiseReportData {
         return Objects.hash(dayOfWeek, itemId);
     }
 
+    @Override
+    public String toString() {
+        return "DayWiseReportData{" +
+                "dayOfWeek=" + dayOfWeek +
+                ", itemId=" + itemId +
+                ", avgQuantityPurchased=" + avgQuantityPurchased +
+                '}';
+    }
+
     public int getItemId() {
         return itemId;
     }

@@ -29,17 +29,17 @@ public class DayWiseReport implements Report {
 
 
     @Override
-    public void generate(List<data_extraction.PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
-        Map<DayOfWeek, Map<Integer, Double>> report = purchaseEvents
+    public void process(List<data_extraction.PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
+        Map<DayOfWeek, Map<Integer, Double>> dayWiseReports = purchaseEvents
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getDayOfWeek,
                         Collectors.groupingBy(PurchaseEvent::getItemId,
                                 Collectors.averagingDouble(PurchaseEvent::getQuantity))));
         printWriter.println("DayOfWeek\t" +
                 "" + "ItemId\t" + "AvgQuaPurchased ");
-        for (DayOfWeek eachDayOfPurchase : report.keySet()) {
-            for (Integer eachItemId : report.get(eachDayOfPurchase).keySet()) {
-                printWriter.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + report.get(eachDayOfPurchase).get(eachItemId));
+        for (DayOfWeek eachDayOfPurchase : dayWiseReports.keySet()) {
+            for (Integer eachItemId : dayWiseReports.get(eachDayOfPurchase).keySet()) {
+                printWriter.println(eachDayOfPurchase + "\t" + eachItemId + "\t" + dayWiseReports.get(eachDayOfPurchase).get(eachItemId));
                 printWriter.flush();
             }
         }
