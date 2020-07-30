@@ -5,8 +5,8 @@ import java.util.Objects;
 public class HourWiseReportData {
 
     public String hourOfDay;
-    public int avgNumOfActiveSessions;
-    public int avgNumOfItemPurchased;
+    public double avgNumOfActiveSessions;
+    public double avgNumOfItemPurchased;
 
     @Override
     public boolean equals(Object o) {
@@ -29,11 +29,11 @@ public class HourWiseReportData {
         this.hourOfDay = hourOfDay;
     }
 
-    public int getAvgNumOfActiveSession() {
+    public double getAvgNumOfActiveSession() {
         return avgNumOfActiveSessions;
     }
 
-    public void setAvgNumOfActiveSession(int avgNumOfActiveSession) {
+    public void setAvgNumOfActiveSession(double avgNumOfActiveSession) {
         this.avgNumOfActiveSessions = avgNumOfActiveSession;
     }
 
@@ -46,11 +46,11 @@ public class HourWiseReportData {
                 '}';
     }
 
-    public int getAvgNumOfItemPurchased() {
+    public double getAvgNumOfItemPurchased() {
         return avgNumOfItemPurchased;
     }
 
-    public void setAvgNumOfItemPurchased(int avgNumOfItemPurchased) {
+    public void setAvgNumOfItemPurchased(double avgNumOfItemPurchased) {
         this.avgNumOfItemPurchased = avgNumOfItemPurchased;
     }
 }

@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class DayWiseReport implements StreamReport {
 
-    private final Map<DayWiseReportData, Double> totalQuantities = new HashMap<>();
-    private final Map<DayWiseReportData, Double> dayWiseCount = new HashMap<>();
+    private final Map<DayWiseReportData, Integer> totalQuantities = new HashMap<>();
+    private final Map<DayWiseReportData, Integer> dayWiseCount = new HashMap<>();
     private final Set<DayWiseReportData> dayWiseReportData = new HashSet<>();
 
     @Override
@@ -22,11 +22,11 @@ public class DayWiseReport implements StreamReport {
         if (totalQuantities.containsKey(tempData) && dayWiseCount.containsKey(tempData)) {
             dayWiseCount.put(tempData, dayWiseCount.get(tempData) + 1);
             totalQuantities.put(tempData, totalQuantities.get(tempData) + purchaseEvent.getQuantity());
-            tempData.setAvgQuantityPurchased(totalQuantities.get(tempData) / dayWiseCount.get(tempData));
+            tempData.setAvgQuantityPurchased((double)totalQuantities.get(tempData) / dayWiseCount.get(tempData));
             dayWiseReportData.remove(tempData);
         } else {
-            dayWiseCount.put(tempData, 1.0);
-            totalQuantities.put(tempData, (double) purchaseEvent.getQuantity());
+            dayWiseCount.put(tempData, 1);
+            totalQuantities.put(tempData,  purchaseEvent.getQuantity());
             tempData.setAvgQuantityPurchased((double) totalQuantities.get(tempData) / dayWiseCount.get(tempData));
         }
         dayWiseReportData.add(tempData);

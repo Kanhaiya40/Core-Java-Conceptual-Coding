@@ -8,6 +8,6 @@ SUNDAY	214537888	2.5
 SUNDAY	214535653	2.0
 
 HourOfDay	AvgNumOfActiveSession	AvgNumOfItemPurchased
-SUNDAY_9-10  		1							1
-SUNDAY_18-19  		1							1
-FRIDAY_6-7  		1							2
+SUNDAY_9-10  		1.0							1.0
+SUNDAY_18-19  		0.5							0.5
+FRIDAY_6-7  		0.5							1.0

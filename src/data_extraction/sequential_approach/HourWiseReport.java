@@ -20,16 +20,16 @@ import java.util.stream.Collectors;
  * 420368,2014-04-04T06:13:28.858Z,214535653,2617,3
  * <p>
  * Sample Output:
- * HourOfDay	AvgNumOfActiveSession	AvgItemPurchased
- * 6				1							2
- * 9				1							1
- * 18				1							1
+ * HourOfDay	AvgNumOfActiveSession	AvgNumOfItemPurchased
+ * SUNDAY_9-10  		1.0							1.0
+ * SUNDAY_18-19  		0.5							0.5
+ * FRIDAY_6-7  		    0.5							1.0
  */
 public class HourWiseReport implements Report {
 
     @Override
     public void process(List<PurchaseEvent> purchaseEvents, PrintWriter printWriter) {
-        printWriter.write('\n');
+        printWriter.println("");
         Set<HourWiseReportData> hourWiseReportData = new HashSet<>();
         printWriter.println("HourOfDay\t" + "AvgNumOfActiveSession\t" + "AvgNumOfItemPurchased");
         Map<String, Set<Integer>> uniqueSessionId = purchaseEvents
@@ -40,15 +40,16 @@ public class HourWiseReport implements Report {
                 .stream()
                 .collect(Collectors.groupingBy(PurchaseEvent::getHourOfPurchaseEvent,
                         Collectors.mapping(PurchaseEvent::getItemId, Collectors.toSet())));
+        Map<String, Long> hourCount = purchaseEvents
+                .stream()
+                .collect(Collectors.groupingBy(PurchaseEvent::getHourOfPurchaseEvent,
+                        Collectors.counting()));
         purchaseEvents.forEach(purchaseEvent -> {
-            if (uniqueItemId.containsKey(purchaseEvent.getHourOfPurchaseEvent()) &&
-                    uniqueSessionId.containsKey(purchaseEvent.getHourOfPurchaseEvent())) {
-                HourWiseReportData newHourWiseReportData = new HourWiseReportData();
-                newHourWiseReportData.setHourOfDay(purchaseEvent.getHourOfPurchaseEvent());
-                newHourWiseReportData.setAvgNumOfItemPurchased(uniqueItemId.get(purchaseEvent.getHourOfPurchaseEvent()).size());
-                newHourWiseReportData.setAvgNumOfActiveSession(uniqueSessionId.get(purchaseEvent.getHourOfPurchaseEvent()).size());
-                hourWiseReportData.add(newHourWiseReportData);
-            }
+            HourWiseReportData newHourWiseReport = new HourWiseReportData();
+            newHourWiseReport.setHourOfDay(purchaseEvent.getHourOfPurchaseEvent());
+            newHourWiseReport.setAvgNumOfActiveSession((double) (uniqueSessionId.get(purchaseEvent.getHourOfPurchaseEvent()).size()) / hourCount.get(purchaseEvent.getHourOfPurchaseEvent()).intValue());
+            newHourWiseReport.setAvgNumOfItemPurchased((double) (uniqueItemId.get(purchaseEvent.getHourOfPurchaseEvent()).size()) / hourCount.get(purchaseEvent.getHourOfPurchaseEvent()).intValue());
+            hourWiseReportData.add(newHourWiseReport);
         });
         for (HourWiseReportData hourReportData : hourWiseReportData) {
             printWriter.println(hourReportData.getHourOfDay() + "\t\t"
