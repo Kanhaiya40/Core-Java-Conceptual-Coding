@@ -4,29 +4,27 @@ import java.util.List;
 import java.util.Map;
 
 public class MultipleThreadExecutor implements Runnable {
-    private final List<String> lines;
-    private final int startFrom;
-    private final int lengthUpTo;
+    private final List<String> buffer;
     private final Map<String, Integer> wordFrequency;
 
-    MultipleThreadExecutor(List<String> lines, int startFrom, int lengthUpTo, Map<String, Integer> wordFrequency) {
-        this.lines = lines;
-        this.startFrom = startFrom;
-        this.lengthUpTo = lengthUpTo;
+    MultipleThreadExecutor(List<String> buffer, Map<String, Integer> wordFrequency) {
+        this.buffer = buffer;
         this.wordFrequency = wordFrequency;
     }
 
     @Override
     public void run() {
-        for (int i = startFrom; i < (startFrom + lengthUpTo); i++) {
-            String[] words = lines.get(i).split(" ");
-            for (String word : words) {
-                    if (wordFrequency.containsKey(word)) {
-                        wordFrequency.put(word, wordFrequency.get(word) + 1);
-                    } else {
-                        wordFrequency.put(word, 1);
+            for (int i=0;i<buffer.size();i++) {
+                String[] words = buffer.get(i).split(" ");
+                for (String word : words) {
+                    synchronized (wordFrequency) {
+                        if (wordFrequency.containsKey(word)) {
+                            wordFrequency.put(word, wordFrequency.get(word) + 1);
+                        } else {
+                            wordFrequency.put(word, 1);
+                        }
                     }
+                }
             }
         }
     }
-}

@@ -3,29 +3,15 @@ package words_frequency;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 public class WordParser {
-    private final String filePath;
-    private List<String> lines = new ArrayList<>();
 
-    public WordParser(String filePath) throws IOException {
-        this.filePath = filePath;
+    public WordParser() throws IOException {
         parse();
     }
 
-    public static void main(String[] args) throws IOException {
-        String filePath = "home/shubh/Desktop/rough.txt";
-        WordParser wordParser = new WordParser(filePath);
-        System.out.println(wordParser.getLines());
-    }
-
-    public List<String> getLines() {
-        return lines;
-    }
-
-    public void parse() throws IOException {
-        lines = Files.readAllLines(Paths.get(filePath));
+    public Stream<String> parse() throws IOException {
+        return Files.lines(Paths.get("/home/shubh/Desktop/rough.txt"));
     }
 }
