@@ -1,31 +1,38 @@
 package words_frequency.runnable_concept;
 
-import words_frequency.WordParser;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public class RunnableExecutor {
-    public static void main(String[] args) throws IOException {
-        List<String> buffer = new ArrayList<>();
-        int sizeOfBuffer = 2;
-        WordParser wordParser = new WordParser();
-        Stream<String> lines = wordParser.parse();
-        Map<String, Integer> wordFrequency = new HashMap<>();
-        lines.forEach(eachLine -> {
-            if (buffer.size() >= sizeOfBuffer) {
-                new Thread(new MultipleThreadExecutor(buffer, wordFrequency)).start();
-                buffer.clear();
-            }
-            buffer.add(eachLine);
-        });
-        synchronized (wordFrequency) {
-            System.out.println(wordFrequency);
-        }
+    private final List<Thread> threads = new ArrayList<>();
+    private final Map<String, Integer> wordFrequency = new HashMap<>();
+    private final List<String> lines;
+    private final int sizeOfBuffer;
+
+    public RunnableExecutor(List<String> lines, int sizeOfBuffer) {
+        this.lines = lines;
+        this.sizeOfBuffer = sizeOfBuffer;
     }
+
+    public Map<String, Integer> calculateWordFrequency() throws InterruptedException {
+        int i = 0;
+        while (i != lines.size()) {
+            List<String> buffer = new ArrayList<>();
+            while (buffer.size() != sizeOfBuffer && i != lines.size()) {
+                buffer.add(lines.get(i));
+                i++;
+            }
+            Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequency));
+            tempThread.start();
+            threads.add(tempThread);
+            for (Thread thread : threads) {
+                thread.join();
+            }
+        }
+
+        return wordFrequency;
+    }
+
 }

@@ -14,15 +14,13 @@ public class MultipleThreadExecutor extends Thread {
 
     @Override
     public void run() {
-        for (int i=0;i<buffer.size();i++) {
-            String[] words = buffer.get(i).split(" ");
+        for (String s : buffer) {
+            String[] words = s.split(" ");
             for (String word : words) {
-                synchronized (wordFrequency) {
-                    if (wordFrequency.containsKey(word)) {
-                        wordFrequency.put(word, wordFrequency.get(word) + 1);
-                    } else {
-                        wordFrequency.put(word, 1);
-                    }
+                if (wordFrequency.containsKey(word)) {
+                    wordFrequency.put(word, wordFrequency.get(word) + 1);
+                } else {
+                    wordFrequency.put(word, 1);
                 }
             }
         }
