@@ -14,13 +14,12 @@ public class CallableExecutor {
     private final int sizeOfBuffer;
     private final List<FutureTask<Map<String, Integer>>> futureTasks = new ArrayList<>();
 
-    public CallableExecutor(List<String> lines, int sizeOfBuffer) throws InterruptedException {
+    public CallableExecutor(List<String> lines, int sizeOfBuffer) {
         this.lines = lines;
         this.sizeOfBuffer = sizeOfBuffer;
-        calculateWordFrequency();
     }
 
-    public void calculateWordFrequency() throws InterruptedException {
+    public Map<String,Integer> calculateWordFrequency() throws InterruptedException, ExecutionException {
         FutureTask<Map<String, Integer>> futureTask;
         int i = 0;
         while (i != lines.size()) {
@@ -35,11 +34,12 @@ public class CallableExecutor {
             Thread tempThread = new Thread(futureTask);
             tempThread.start();
             threads.add(tempThread);
+            for (Thread thread : threads
+            ) {
+                thread.join();
+            }
         }
-        for (Thread thread : threads
-        ) {
-            thread.join();
-        }
+        return getCount();
     }
 
     public Map<String, Integer> getCount() throws ExecutionException, InterruptedException {

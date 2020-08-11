@@ -1,4 +1,4 @@
-package words_frequency;
+package words_frequency.sequential_concept;
 
 import java.util.HashMap;
 import java.util.List;

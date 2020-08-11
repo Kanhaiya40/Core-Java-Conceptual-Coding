@@ -27,9 +27,9 @@ public class ThreadExecutor {
             Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequency));
             tempThread.start();
             threads.add(tempThread);
-        }
-        for (Thread thread : threads) {
-            thread.join();
+            for (Thread thread : threads) {
+                thread.join();
+            }
         }
         return wordFrequency;
     }

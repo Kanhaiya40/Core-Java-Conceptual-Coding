@@ -7,16 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LineParser {
-    String filePath;
 
-    LineParser(String filePath) {
-        this.filePath = filePath;
-    }
 
     public List<String> parse() throws IOException {
         List<String> lines = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/shubh/Desktop/samp.txt"))) {
             String line = bufferedReader.readLine();
             while (line != null) {
                 lines.add(line);
