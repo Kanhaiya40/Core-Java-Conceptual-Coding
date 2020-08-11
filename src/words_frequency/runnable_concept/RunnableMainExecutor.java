@@ -13,7 +13,7 @@ public class RunnableMainExecutor {
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         RunnableExecutor runnableExecutor = new RunnableExecutor(lines, sizeOfBuffer);
-        Map<String, Integer> wordFrequencyRunnable = runnableExecutor.calculateWordFrequency();
-        System.out.println("Runnable Concept :" + wordFrequencyRunnable);
+        Map<String, Integer> wordFrequenciesRunnable = runnableExecutor.calculateWordFrequency();
+        System.out.println("Runnable Concept :" + wordFrequenciesRunnable);
     }
 }

@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ThreadExecutor {
+
     private final List<Thread> threads = new ArrayList<>();
-    private final Map<String, Integer> wordFrequency = new HashMap<>();
+    private final Map<String, Integer> wordFrequencies = new HashMap<>();
     private final List<String> lines;
     private final int sizeOfBuffer;
 
@@ -24,13 +25,13 @@ public class ThreadExecutor {
                 buffer.add(lines.get(i));
                 i++;
             }
-            Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequency));
+            Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequencies));
             tempThread.start();
             threads.add(tempThread);
             for (Thread thread : threads) {
                 thread.join();
             }
         }
-        return wordFrequency;
+        return wordFrequencies;
     }
 }

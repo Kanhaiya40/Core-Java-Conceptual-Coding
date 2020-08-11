@@ -14,7 +14,7 @@ public class CallableMainExecutor {
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         CallableExecutor callableExecutor = new CallableExecutor(lines, sizeOfBuffer);
-        Map<String, Integer> wordFrequencyCallable = callableExecutor.calculateWordFrequency();
-        System.out.println("Callable Concept :" + wordFrequencyCallable);
+        Map<String, Integer> wordFrequenciesCallable = callableExecutor.calculateWordFrequency();
+        System.out.println("Callable Concept :" + wordFrequenciesCallable);
     }
 }

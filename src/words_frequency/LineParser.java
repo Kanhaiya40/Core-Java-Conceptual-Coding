@@ -10,8 +10,8 @@ public class LineParser {
 
 
     public List<String> parse() throws IOException {
-        List<String> lines = new ArrayList<>();
 
+        List<String> lines = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/home/shubh/Desktop/samp.txt"))) {
             String line = bufferedReader.readLine();
             while (line != null) {

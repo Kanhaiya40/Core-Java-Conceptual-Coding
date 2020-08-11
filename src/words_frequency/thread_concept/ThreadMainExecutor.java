@@ -13,7 +13,7 @@ public class ThreadMainExecutor {
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         ThreadExecutor threadExecutor = new ThreadExecutor(lines, sizeOfBuffer);
-        Map<String, Integer> wordFrequency = threadExecutor.calculateWordFrequency();
-        System.out.println("Thread Concept :" + wordFrequency);
+        Map<String, Integer> wordFrequenciesThread = threadExecutor.calculateWordFrequency();
+        System.out.println("Thread Concept :" + wordFrequenciesThread);
     }
 }

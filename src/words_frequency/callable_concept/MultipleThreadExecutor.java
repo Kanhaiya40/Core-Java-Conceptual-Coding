@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class MultipleThreadExecutor implements Callable<Map<String, Integer>> {
+
     private final List<String> buffer;
 
     MultipleThreadExecutor(List<String> buffer) {
@@ -14,17 +15,17 @@ public class MultipleThreadExecutor implements Callable<Map<String, Integer>> {
 
     @Override
     public Map<String, Integer> call() {
-        Map<String, Integer> wordFrequency = new HashMap<>();
-        for (String s : buffer) {
-            String[] words = s.split(" ");
+        Map<String, Integer> wordFrequencies = new HashMap<>();
+        for (String eachLine : buffer) {
+            String[] words = eachLine.split("[,.;?()\\s]+");
             for (String word : words) {
-                if (wordFrequency.containsKey(word)) {
-                    wordFrequency.put(word, wordFrequency.get(word) + 1);
+                if (wordFrequencies.containsKey(word)) {
+                    wordFrequencies.put(word, wordFrequencies.get(word) + 1);
                 } else {
-                    wordFrequency.put(word, 1);
+                    wordFrequencies.put(word, 1);
                 }
             }
         }
-        return wordFrequency;
+        return wordFrequencies;
     }
 }

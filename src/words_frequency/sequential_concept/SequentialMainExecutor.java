@@ -12,8 +12,8 @@ public class SequentialMainExecutor {
         LineParser lineParser = new LineParser();
         List<String> lines = lineParser.parse();
         WordFrequencyCalculator wordFrequencyCalculator = new WordFrequencyCalculator(lines);
-        Map<String, Integer> wordFrequencySequential = wordFrequencyCalculator.wordVsCount();
-        System.out.println("Sequential Approach :" + wordFrequencySequential);
+        Map<String, Integer> wordFrequencies = wordFrequencyCalculator.wordVsCount();
+        System.out.println("Sequential Approach :" + wordFrequencies);
 
 
     }

@@ -1,20 +1,23 @@
-package words_frequency.sequential_concept;
+package words_frequency.threadpoool_concept.threadpool_callable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-public class WordFrequencyCalculator {
+public class MultipleThreadCallableExecutor implements Callable<Map<String, Integer>> {
 
-    private final List<String> lines;
+    private final List<String> buffer;
 
-    WordFrequencyCalculator(List<String> lines) {
-        this.lines = lines;
+    MultipleThreadCallableExecutor(List<String> buffer) {
+        this.buffer = buffer;
     }
 
-    public Map<String, Integer> wordVsCount() {
+
+    @Override
+    public Map<String, Integer> call() {
         Map<String, Integer> wordFrequencies = new HashMap<>();
-        for (String eachLine : lines) {
+        for (String eachLine : buffer) {
             String[] words = eachLine.split("[,.;?()\\s]+");
             for (String word : words) {
                 if (wordFrequencies.containsKey(word)) {
