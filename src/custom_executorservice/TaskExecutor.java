@@ -24,8 +24,13 @@ public class TaskExecutor implements Runnable {
                     }
                     task = linkedList.poll();
                 }
-                assert task != null;
-                task.run();
+                try {
+                    if( task != null) {
+                        task.run();
+                    }
+                }catch (RuntimeException runtimeException){
+                    runtimeException.printStackTrace();
+                }
             }
         }
     }
