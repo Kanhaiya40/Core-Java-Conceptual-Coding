@@ -9,18 +9,17 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class CallableExecutor {
-
     private final List<Thread> threads = new ArrayList<>();
     private final List<String> lines;
     private final int sizeOfBuffer;
     private final List<FutureTask<Map<String, Integer>>> futureTasks = new ArrayList<>();
 
-    public CallableExecutor(List<String> lines, int sizeOfBuffer) {
+    public CallableExecutor(List<String> lines, int sizeOfBuffer) throws InterruptedException {
         this.lines = lines;
         this.sizeOfBuffer = sizeOfBuffer;
     }
 
-    public Map<String, Integer> calculateWordFrequency() throws InterruptedException, ExecutionException {
+    public Map<String,Integer> calculateWordFrequency() throws InterruptedException, ExecutionException {
         FutureTask<Map<String, Integer>> futureTask;
         int i = 0;
         while (i != lines.size()) {
@@ -36,25 +35,26 @@ public class CallableExecutor {
             tempThread.start();
             threads.add(tempThread);
         }
-        for (Thread thread : threads) {
+        for (Thread thread : threads
+        ) {
             thread.join();
         }
         return getCount();
     }
 
-    private Map<String, Integer> getCount() throws ExecutionException, InterruptedException {
-        Map<String, Integer> wordFrequencies = new HashMap<>();
+    public Map<String, Integer> getCount() throws ExecutionException, InterruptedException {
+        Map<String, Integer> wordFrequency = new HashMap<>();
         for (FutureTask<Map<String, Integer>> futureTask : futureTasks) {
             Map<String, Integer> word = futureTask.get();
             for (String key : word.keySet()) {
-                if (wordFrequencies.containsKey(key)) {
-                    wordFrequencies.put(key, wordFrequencies.get(key) + word.get(key));
+                if (wordFrequency.containsKey(key)) {
+                    wordFrequency.put(key, wordFrequency.get(key) + word.get(key));
                 } else {
-                    wordFrequencies.put(key, word.get(key));
+                    wordFrequency.put(key, word.get(key));
                 }
             }
         }
-        return wordFrequencies;
+        return wordFrequency;
     }
 }
 

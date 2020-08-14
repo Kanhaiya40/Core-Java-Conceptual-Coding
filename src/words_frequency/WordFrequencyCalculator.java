@@ -1,22 +1,21 @@
-package words_frequency.callable_concept;
+package words_frequency;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-public class MultipleThreadExecutor implements Callable<Map<String, Integer>> {
-    private final List<String> buffer;
+public class WordFrequencyCalculator {
+    private final List<String> lines;
 
-    MultipleThreadExecutor(List<String> buffer) {
-        this.buffer = buffer;
+    WordFrequencyCalculator(List<String> lines) {
+        this.lines = lines;
     }
 
-    @Override
-    public Map<String, Integer> call() {
+    public Map<String, Integer> wordVsCount() throws IOException {
         Map<String, Integer> wordFrequency = new HashMap<>();
-        for (String s : buffer) {
-            String[] words = s.split(",");
+        for (String eachLine : lines) {
+            String[] words = eachLine.split(",");
             for (String word : words) {
                 if (wordFrequency.containsKey(word)) {
                     wordFrequency.put(word, wordFrequency.get(word) + 1);

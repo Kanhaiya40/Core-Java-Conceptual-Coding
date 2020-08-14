@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public class RunnableExecutor {
-
     private final List<Thread> threads = new ArrayList<>();
-    private final Map<String, Integer> wordFrequencies = new HashMap<>();
+    private final Map<String, Integer> wordFrequency = new HashMap<>();
     private final List<String> lines;
     private final int sizeOfBuffer;
 
-    public RunnableExecutor(List<String> lines, int sizeOfBuffer) {
-        this.lines = lines;
-        this.sizeOfBuffer = sizeOfBuffer;
+    public RunnableExecutor(List<String> lines, int sizeOfBuffer){
+        this.lines=lines;
+        this.sizeOfBuffer=sizeOfBuffer;
     }
 
     public Map<String, Integer> calculateWordFrequency() throws InterruptedException {
@@ -25,13 +24,15 @@ public class RunnableExecutor {
                 buffer.add(lines.get(i));
                 i++;
             }
-            Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequencies));
+            Thread tempThread = new Thread(new MultipleThreadExecutor(buffer, wordFrequency));
             tempThread.start();
             threads.add(tempThread);
+            for (Thread thread : threads) {
+                thread.join();
+            }
         }
-        for (Thread thread : threads) {
-            thread.join();
-        }
-        return wordFrequencies;
+
+        return wordFrequency;
     }
+
 }
