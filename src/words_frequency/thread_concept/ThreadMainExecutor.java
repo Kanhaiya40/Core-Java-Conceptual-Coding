@@ -9,11 +9,12 @@ import java.util.Map;
 public class ThreadMainExecutor {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        LineParser lineParser = new LineParser();
+        String filePath="/home/kanhaiya/Desktop/samp.txt";
+        LineParser lineParser = new LineParser(filePath);
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         ThreadExecutor threadExecutor = new ThreadExecutor(lines, sizeOfBuffer);
-        Map<String, Integer> wordFrequenciesThread = threadExecutor.calculateWordFrequency();
+        Map<String, Integer> wordFrequenciesThread = threadExecutor.calculateFrequency();
         System.out.println("Thread Concept :" + wordFrequenciesThread);
     }
 }

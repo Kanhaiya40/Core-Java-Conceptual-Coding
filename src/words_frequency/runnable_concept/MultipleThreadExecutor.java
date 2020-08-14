@@ -14,15 +14,17 @@ public class MultipleThreadExecutor implements Runnable {
 
     @Override
     public void run() {
-        for (String s : buffer) {
-            String[] words = s.split(",");
-            for (String word : words) {
-                if (wordFrequency.containsKey(word)) {
-                    wordFrequency.put(word, wordFrequency.get(word) + 1);
-                } else {
-                    wordFrequency.put(word, 1);
+            for (int i=0;i<buffer.size();i++) {
+                String[] words = buffer.get(i).split(" ");
+                for (String word : words) {
+                    synchronized (wordFrequency) {
+                        if (wordFrequency.containsKey(word)) {
+                            wordFrequency.put(word, wordFrequency.get(word) + 1);
+                        } else {
+                            wordFrequency.put(word, 1);
+                        }
+                    }
                 }
             }
         }
     }
-}

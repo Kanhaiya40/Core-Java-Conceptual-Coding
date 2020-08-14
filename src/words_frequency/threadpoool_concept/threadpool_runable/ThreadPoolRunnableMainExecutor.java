@@ -9,7 +9,8 @@ import java.util.Map;
 public class ThreadPoolRunnableMainExecutor {
 
     public static void main(String[] args) throws IOException {
-        LineParser lineParser = new LineParser();
+        String filePath="/home/kanhaiya/Desktop/samp.txt";
+        LineParser lineParser = new LineParser(filePath);
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         ThreadPoolRunnableExecutor threadPoolExecutor = new ThreadPoolRunnableExecutor(lines, sizeOfBuffer);

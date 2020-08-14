@@ -9,11 +9,12 @@ import java.util.Map;
 public class RunnableMainExecutor {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        LineParser lineParser = new LineParser();
+        String filePath="/home/kanhaiya/Desktop/samp.txt";
+        LineParser lineParser = new LineParser(filePath);
         List<String> lines = lineParser.parse();
         int sizeOfBuffer = 100;
         RunnableExecutor runnableExecutor = new RunnableExecutor(lines, sizeOfBuffer);
-        Map<String, Integer> wordFrequenciesRunnable = runnableExecutor.calculateWordFrequency();
+        Map<String, Integer> wordFrequenciesRunnable = runnableExecutor.calculateFrequency();
         System.out.println("Runnable Concept :" + wordFrequenciesRunnable);
     }
 }

@@ -9,7 +9,8 @@ import java.util.Map;
 public class RecursiveTaskMainExecutor {
 
     public static void main(String[] args) throws IOException {
-        LineParser lineParser = new LineParser();
+        String filePath="/home/kanhaiya/Desktop/samp.txt";
+        LineParser lineParser = new LineParser(filePath);
         List<String> lines = lineParser.parse();
         RecursiveTaskExecutor recursiveTaskExecutor = new RecursiveTaskExecutor(lines);
         Map<String, Integer> wordFrequencies = recursiveTaskExecutor.calculateWordFrequency();

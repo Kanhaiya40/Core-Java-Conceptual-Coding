@@ -9,7 +9,8 @@ import java.util.Map;
 public class SequentialMainExecutor {
 
     public static void main(String[] args) throws IOException {
-        LineParser lineParser = new LineParser();
+        String filePath="/home/kanhaiya/Desktop/samp.txt";
+        LineParser lineParser = new LineParser(filePath);
         List<String> lines = lineParser.parse();
         WordFrequencyCalculator wordFrequencyCalculator = new WordFrequencyCalculator(lines);
         Map<String, Integer> wordFrequencies = wordFrequencyCalculator.wordVsCount();
