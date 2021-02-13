@@ -15,7 +15,5 @@ public class SequentialMainExecutor {
         WordFrequencyCalculator wordFrequencyCalculator = new WordFrequencyCalculator(lines);
         Map<String, Integer> wordFrequencies = wordFrequencyCalculator.wordVsCount();
         System.out.println("Sequential Approach :" + wordFrequencies);
-
-
     }
 }

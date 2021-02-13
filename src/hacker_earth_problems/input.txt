@@ -1,0 +1,9 @@
+22|Data Structures|45
+23|English|52
+22|English|Level 2|51
+26|Data Structures
+
+23|Data Structures|61
+26|English|81
+
+27|Humanities|0
